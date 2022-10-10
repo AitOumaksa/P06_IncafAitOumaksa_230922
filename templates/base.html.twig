@@ -2,18 +2,65 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+        <meta name="description" content="Snowtricks est un site collaboratif dédié à la pratique du snowboard. Vous y trouverez les tricks principaux et les conseils pour les réussir" />
+        <meta name="author" content="Incaf Ait Oumaksa" />
+        <link rel="icon" href="favicon.ico">
+        <title>{% block title %}{% endblock %}</title>
+         <link rel="icon" href="../public/favicon.ico">
         {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
         {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
-        {% endblock %}
-
-        {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
+           <link rel="stylesheet" href="{{ asset('../assets/style/style.css') }}">
+           <link href="{{ asset('../node_modules/bootstrap/dist/css/bootstrap.css') }}" rel="stylesheet" />
+           <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+           <link rel="preconnect" href="https://fonts.googleapis.com">
+           <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+           <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400&family=Roboto:ital,wght@0,400;1,700&display=swap" rel="stylesheet">
         {% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        {% block body %}
+        <header>
+         <nav class="navbar navbar-expand-lg bg-light">
+            <div class="container">
+                <a class="navbar-brand" href="#"><img src="{{ asset('../assets/logo.png') }}" alt="Logo SnowTricks"></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                    <a class="nav-link fs-5 text-info" aria-current="page" href="#"> <i class="fas fa-home"></i> Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link fs-5 text-info" href="#list-Snowboard"><i class="fas fa-snowboarding"></i> Tricks</a>
+                    </li>
+                </ul>
+
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                    <a class="nav-link fs-5 text-info" aria-current="page" href="#"><i class="fas fa-user-plus"></i> Inscription</a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link fs-5 text-info" href="#list-Snowboard"><i class="fas fa-sign-in-alt"></i> Connexion</a>
+                    </li>
+                </ul>
+                </div>
+            </div>
+            </nav>
+            <i class="fa-duotone fa-square-down"></i>
+            </header>
+            {% block main %}{% endblock %}
+            <footer id="sticky-footer" class="flex-shrink-0 py-4 bg-info text-white-50 fs-3">
+                <div class="container text-center text-dark">
+                <small>Copyright &copy; SnowTricks</small>
+                </div>
+            </footer>
+
+        
+        {% endblock %}
+
+        {% block javascripts %}
+        <script src="https://kit.fontawesome.com/fc1e988ec8.js" crossorigin="anonymous"></script>
+        {% endblock %}
     </body>
 </html>

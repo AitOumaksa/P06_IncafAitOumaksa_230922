@@ -1,0 +1,50 @@
+{% extends './base.html.twig' %}
+{% block title %}SnowTricks - Home{% endblock %}
+{% block stylesheets %}{{ parent() }}{% endblock %}
+
+
+ {% block main %}
+<div class = "">
+ <!-- Background image -->
+<div class="bg-image"></div>
+<!-- Background image -->
+<!--  Start Card of Tricks-->
+
+<div class="container-fluid">
+    <div class="container">
+    <div id="trick-container" class="row">
+
+    <div class="col-lg-4 col-md-6 col-sm-12 py-4 ml-3" id = "list-Snowboard">
+    <div class="card shadow">
+        <div class="card-header">
+            <h5 class="card-title mb-0">
+            <a href="#" class="text-decoration-none">
+            <span class="responsive-logo-trick">
+            <i class="fas fa-snowboarding mr-1 text-info"></i>
+            </span>
+            Iste
+            </a>
+            </h5>
+        </div>
+
+        <img src="{{ asset('../assets/img/bg.jpg')}}" class="card-img-top" alt="Image 1">
+                            
+     <div class="card-footer pr-3 pl-3">
+        <p class="mb-0 text-muted">
+        <img src="{{ asset('../assets/img/avatar.png')}}" class="rounded-circle avatar" alt="Avatar" /> Par <a href="#" class="text-info text-decoration-none">Incaf</a>
+        <span class="responsive-date-trick">  le 09/01/20 </span>
+        </p>
+     </div>
+    </div>
+    </div>
+    </div>
+</div>    
+</div>
+<!-- end Card of Tricks -->
+</div>
+ {% endblock %}
+
+
+
+
+

@@ -1,0 +1,10 @@
+.bg-image{
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url('../img/bg.jpg'); 
+    height : 100vh;
+}
+.avatar{
+    width: 50px;
+}
