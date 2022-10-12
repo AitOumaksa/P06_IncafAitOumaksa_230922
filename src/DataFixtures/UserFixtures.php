@@ -91,6 +91,7 @@ class UserFixtures extends Fixture
                 $manager->persist($image);
 
             }
+            $manager->persist($trick);
 
             // 1 to 2 Video by Trick
             for ($l=0; $l<mt_rand(1, 2); $l++)
