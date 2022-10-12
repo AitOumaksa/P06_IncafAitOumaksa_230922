@@ -33,7 +33,6 @@ class UserFixtures extends Fixture
 
         $faker =Factory::create('fr_FR');
         $users = [];
-        $categories = [];
         $genders = ['male', 'female'];
         $gender = $faker->randomElement($genders);
         $date  = new \DateTimeImmutable();
@@ -61,37 +60,33 @@ class UserFixtures extends Fixture
             $user->setAvatar('https://randomuser.me/api/portraits/' . ($gender == 'male' ? 'men/' : 'women/') . $faker->numberBetween(1,99) . '.jpg');
             $user->setCreatedAt($date);
             $user->setUpdatedAt($date);
-            $manager->persist($user);
             $users[] = $user;
+            $manager->persist($user);
+          
         }
-
         //Génerate tricks 
-        foreach ($category as $categoryName)
-        {
-            var_dump($categoryName);
-            $categories[] = $categoryName;
-        }
-         
-
         foreach ($tricksName as $trickName)
         {
+           
             $trick = new Tricks();
             $trick->setName($trickName);
-            $trick->setDescription($faker->paragraph(5));
+            $trick->setDescription($faker->paragraph( 5, true));
+            
             $trick->setCreatedAt($date);
             $trick->setUpdatedAt($date);
             $trick->setSlug($trickName);
-            $trick->setCatégory($faker->randomElement($categories));
+            $trick->setCatégory($faker->randomElement($category));
             $trick->setUser($faker->randomElement($users));
+            $manager->persist($trick);
+
             for ($k=1; $k<4; $k++)
             {
                 $image = new Image();
                 $image->setPathImg('img/tricks' . $trick->getName() . ' ' . $k . '.jpg');
                 $image->setTricks($trick);
                 $manager->persist($image);
-
             }
-            $manager->persist($trick);
+          
 
             // 1 to 2 Video by Trick
             for ($l=0; $l<mt_rand(1, 2); $l++)
@@ -108,8 +103,8 @@ class UserFixtures extends Fixture
                 $comment->setContent($faker->sentence(mt_rand(1, 5)));
                 $comment->setCreatedAt($date);
                 $comment->setUpdatedAt($date);
-                $comment->setUser($faker->randomElement($users));
-                $comment->setTricks($trick);
+               $comment->setUser($faker->randomElement($users));
+               $comment->setTricks($trick);
                 
                 $manager->persist($comment);
             } 
