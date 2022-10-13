@@ -23,11 +23,11 @@ class Comment
     #[ORM\Column]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    #[ORM\ManyToOne(inversedBy: 'comment')]
-    private ?User $user = null;
-
     #[ORM\ManyToOne(inversedBy: 'commmentTricks')]
     private ?Tricks $tricks = null;
+
+    #[ORM\ManyToOne(inversedBy: 'comment')]
+    private ?User $user = null;
 
     public function getId(): ?int
     {

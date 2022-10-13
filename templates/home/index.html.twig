@@ -11,9 +11,9 @@
 <!--  Start Card of Tricks-->
 
 <div class="container-fluid">
-    <div class="container">
-    <div id="trick-container" class="row">
-
+<div class="container">
+<div id="trick-container" class="row">
+    {% for trick in tricks %}
     <div class="col-lg-4 col-md-6 col-sm-12 py-4 ml-3" id = "list-Snowboard">
     <div class="card shadow">
         <div class="card-header">
@@ -22,22 +22,26 @@
             <span class="responsive-logo-trick">
             <i class="fas fa-snowboarding mr-1 text-info"></i>
             </span>
-            Iste
+            {{ trick.name }}
             </a>
             </h5>
         </div>
-
-        <img src="{{ asset('../assets/img/bg.jpg')}}" class="card-img-top" alt="Image 1">
-                            
+        <img src="{{ asset('assets/figures/' ~  trick.image.first.pathImg)}}" class="card-img-top" alt="Image 1">                     
      <div class="card-footer pr-3 pl-3">
         <p class="mb-0 text-muted">
-        <img src="{{ asset('../assets/img/avatar.png')}}" class="rounded-circle avatar" alt="Avatar" /> Par <a href="#" class="text-info text-decoration-none">Incaf</a>
-        <span class="responsive-date-trick">  le 09/01/20 </span>
+        {% if trick.updatedAt <= trick.createdAt %}
+        <img src="{{ asset(trick.user.avatar)}}" class="rounded-circle avatar" alt="Avatar" /> Crée par <a href="#" class="text-info text-decoration-none">{{trick.user.userName}}</a>
+        <span class="responsive-date-trick">  {{trick.createdAt|date('d/m/Y',"Europe/Paris")}}</span>
+        {% else %}
+         <img src="{{ asset(trick.user.avatar)}}" class="rounded-circle avatar" alt="Avatar" /> Mis à jour par <a href="#" class="text-info text-decoration-none">{{trick.user.userName}}</a>
+        <span class="responsive-date-trick">  {{trick.createdAt|date('d/m/Y',"Europe/Paris")}}</span>
+        {% endif %}
         </p>
      </div>
     </div>
     </div>
-    </div>
+    {% endfor %}
+</div>
 </div>    
 </div>
 <!-- end Card of Tricks -->

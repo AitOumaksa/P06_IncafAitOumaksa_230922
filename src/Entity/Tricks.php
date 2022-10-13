@@ -34,9 +34,6 @@ class Tricks
     #[ORM\Column]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    #[ORM\ManyToOne(inversedBy: 'tricks')]
-    private ?User $user = null;
-
     #[ORM\OneToMany(mappedBy: 'tricks', targetEntity: Comment::class)]
     private Collection $commmentTricks;
 
@@ -45,6 +42,9 @@ class Tricks
 
     #[ORM\OneToMany(mappedBy: 'tricks', targetEntity: Video::class)]
     private Collection $video;
+
+    #[ORM\ManyToOne(inversedBy: 'tricks')]
+    private ?User $user = null;
 
     public function __construct()
     {
@@ -228,6 +228,19 @@ class Tricks
                 $video->setTricks(null);
             }
         }
+
+        return $this;
+    }
+    
+    
+    public function getMainImage(): ?Image
+    {
+        return $this->mainImage;
+    }
+
+    public function setMainImage(Image $mainImage): self
+    {
+        $this->mainImage = $mainImage;
 
         return $this;
     }

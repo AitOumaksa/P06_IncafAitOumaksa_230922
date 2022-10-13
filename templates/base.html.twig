@@ -18,7 +18,6 @@
         {% endblock %}
     </head>
     <body>
-        {% block body %}
         <header>
          <nav class="navbar navbar-expand-lg bg-light">
             <div class="container">
@@ -47,7 +46,6 @@
                 </div>
             </div>
             </nav>
-            <i class="fa-duotone fa-square-down"></i>
             </header>
             {% block main %}{% endblock %}
             <footer id="sticky-footer" class="flex-shrink-0 py-4 bg-info text-white-50 fs-3">
@@ -56,8 +54,6 @@
                 </div>
             </footer>
 
-        
-        {% endblock %}
 
         {% block javascripts %}
         <script src="https://kit.fontawesome.com/fc1e988ec8.js" crossorigin="anonymous"></script>

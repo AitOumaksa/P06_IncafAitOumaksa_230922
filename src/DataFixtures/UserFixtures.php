@@ -82,7 +82,7 @@ class UserFixtures extends Fixture
             for ($k=1; $k<4; $k++)
             {
                 $image = new Image();
-                $image->setPathImg('img/tricks' . $trick->getName() . ' ' . $k . '.jpg');
+                $image->setPathImg('img/tricks/' . $trick->getName() . ' ' . $k . '.jpg');
                 $image->setTricks($trick);
                 $manager->persist($image);
             }
