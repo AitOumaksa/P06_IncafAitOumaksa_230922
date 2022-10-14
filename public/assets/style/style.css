@@ -4,9 +4,18 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    background-image: url('../img/bg.jpg'); 
+    background-image: url('../img/bg1.jpg'); 
     height : 100vh;
 }
 .avatar{
     width: 50px;
+}
+.bloc-title-home-page{
+
+    padding-top: 20rem;
+}
+.image-carousel{
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }

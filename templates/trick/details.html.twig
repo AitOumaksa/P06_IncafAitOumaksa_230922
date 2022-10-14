@@ -1,0 +1,102 @@
+{% extends './base.html.twig' %}
+{% block title %}SnowTricks - {{ trick.name }}{% endblock %}
+{% block stylesheets %}{{ parent() }}{% endblock %}
+
+{% block main %}
+          <!-- Start Trick -->
+    <div class=" mt-5">  
+        <div class="row justify-content-center mt-5">          
+            <div class="col-md-10 col-md-offset-1 mt-5 mb-4"> 
+                             
+                <div class="card mt-5">
+                    <img class="card-img-top" src="{{ asset('assets/figures/' ~  trick.image.first.pathImg)}}" alt="Stalefish-main">
+                    <div class="card-body">
+                        <ul class="list-inline trick-data">
+                            <li class="list-inline-item">
+                                Par : <a target="_blank" href="#">{{ trick.user.userName }}</a>
+                            </li> |           
+                            {% if trick.updatedAt <= trick.createdAt %}
+                            <li class="list-inline-item">
+                               (<small>Ajouté le : {{trick.createdAt|date('d/m/Y',"Europe/Paris")}}</small>)
+                            </li>
+                            {% else %}
+                             <li class="list-inline-item">
+                               (<small>Mis à jour le : {{trick.updatedAt|date('d/m/Y',"Europe/Paris")}}</small>)
+                            </li>
+                            {% endif %}  
+                             |                          
+                            <li class="list-inline-item">
+                               {{ trick.catégory }}
+                            </li>
+                        </ul>
+                        <hr>
+                        <h4 class="card-title"><strong>{{ trick.name }}</strong></h4>
+                        <hr>
+                        <!-- Start Carousel -->
+                        <div class="row d-none d-lg-flex load-media">
+                                <div class="col-lg-6 col-md-12">
+                                    <div id="carousel" class="carousel slide mt-3 mb-2" data-ride="carousel">
+                                        <ol class="carousel-indicators">
+                                            <li data-target=".carousel" data-slide-to="0"  class="active" ></li>
+                                        </ol>
+                                        <div class="carousel-inner enlarge">
+                                         {% for image in trick.image %}
+                                        <div class="carousel-item  active ">
+                                            <img class="d-block image-carousel" src="{{ asset('assets/figures/' ~  image.pathImg)}}" alt="{{ trick.name }}">
+                                        </div>
+                                        {% endfor %}
+                                                    
+                                        </div>
+                                        <a class="carousel-control-prev" href="#carousel" data-slide="prev">
+                                            <span class="carousel-control-prev-icon"></span>
+                                        </a>
+                                        <a class="carousel-control-next" href="#carousel" data-slide="next">
+                                            <span class="carousel-control-next-icon"></span>
+                                        </a> 
+                                    </div>
+                        </div>                                          
+                        <div class="col-lg-6 col-md-12">
+                                    <div id="carousel-v" class="carousel slide mt-3 mb-2" data-ride="carousel">
+                                        <ol class="carousel-indicators">
+                                            <li data-target="#carousel-v" data-slide-to="0"  class="active" ></li>
+                                            <li data-target="#carousel-v" data-slide-to="1" ></li>
+                                        </ol>
+                                        <div class="carousel-inner">
+                                        <div class="carousel-item  active ">
+                                        <iframe src="https://www.youtube.com/embed/0Oez89EoE_c" allowfullscreen></iframe>
+                                        </div>
+                                        <div class="carousel-item ">
+                                        <iframe src="https://www.youtube.com/embed/f9FjhCt_w2U" allowfullscreen></iframe>
+                                        </div>
+                                                    
+                                        </div>
+                                        <a class="carousel-control-prev" href="#carousel-v" data-slide="prev">
+                                        <span class="carousel-control-prev-icon"></span>
+                                        </a>
+                                        <a class="carousel-control-next" href="#carousel-v" data-slide="next">
+                                        <span class="carousel-control-next-icon"></span>
+                                        </a> 
+                                    </div>
+                                </div>                                                  
+                        </div>                      
+                            <div class="text-center">
+                                <a href="#" id="loadMedia" class="d-md-block d-lg-none">
+                                    <button class="btn btn-outline-secondary">Afficher les médias</button>
+                                </a>
+                                <a href="#" id="hideMedia" class="d-none d-md-none d-lg-none">
+                                    <button class="btn btn-outline-secondary mt-3">Masquer les médias</button>
+                                </a>
+                            </div>
+                        <!-- End Carousel -->
+                        <hr>
+                        <h5 class="card-title">Description</h5>
+ 
+                        <p class="card-text text-justify">{{ trick.description }}</page>
+                        </div>
+
+    </div>                    
+</div>
+                <!--  End Trick -->
+{% endblock %}
+
+
