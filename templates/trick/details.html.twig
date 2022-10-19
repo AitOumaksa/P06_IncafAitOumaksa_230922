@@ -3,12 +3,13 @@
 {% block stylesheets %}{{ parent() }}{% endblock %}
 
 {% block main %}
-          <!-- Start Trick -->
+<!-- Start Trick -->
+<section>
     <div class="mt-5">  
         <div class="row justify-content-center mt-5">          
             <div class="col-md-10 col-md-offset-1 mt-5 mb-4"> 
                              
-                <div class="card mt-5">
+                <div class="card mt-5  shadow p-3 mb-5 bg-body rounded">
                     <img class="card-img-top" src="{{ asset('assets/figures/' ~  trick.images.first.pathImg)}}" alt="Stalefish-main">
                     <div class="card-body">
                         <ul class="list-inline trick-data">
@@ -65,7 +66,56 @@
                         <h5 class="card-title">Description</h5>
                         <p class="card-text text-justify">{{ trick.description }}</page>
             </div>
+
+
     </div>                    
-</div>
-<!--  End Trick -->
+</div> 
+</div>                    
+</div> 
+</section>
+
+
+<!-- Start comment-->
+<section class = "" >
+            <div class="row justify-content-center mt-5">
+                <div class="row d-flex justify-content-center mt-4 my-4">
+                <div class="col-md-10 col-md-offset-1 shadow p-3 mb-5 bg-body rounded">
+                <div class="card text-dark border border-0">
+                    <div class="card-body p-4">
+                        <h4 class="mb-4">Commentaires</h4>
+                        {% for comment in trick.commments %}
+                        <div class="d-flex flex-start border-bottom border-2 mb-3">
+                        <img class="rounded-circle shadow-1-strong me-3"
+                            src="{{ asset(comment.user.avatar)}}" alt="avatar de {{comment.user.userName}}" width="60"
+                            height="60" />
+                        <div>
+                            <h6 class="fw-bold mb-1">{{comment.user.userName}}</h6>
+                            <div class="d-flex align-items-center mb-0">
+                             {% if comment.updatedAt <= comment.createdAt %}
+                            <p class="mb-0">
+                             <small>  Ajouté le : {{comment.createdAt|date('d/m/Y',"Europe/Paris")}}</small>
+                            </p>
+                            {% else %}
+                            <p class="mb-0">
+                              <small> Mis à jour le : {{comment.updatedAt|date('d/m/Y',"Europe/Paris")}}</small>
+                            </p>
+                            {% endif %}
+                            <a href="#!" class="link-muted"><i class="fas fa-pencil-alt ms-2"></i></a>
+                            </div>
+                            <p class="mb-0">
+                            {{comment.content}}
+                            </p>
+                            </div>
+                           
+                        </div>
+                   
+                        {% endfor %}
+                    </div>
+
+                </div>
+                </div>
+                </div>
+            </div>
+</section>
+
 {% endblock %}
