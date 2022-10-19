@@ -23,10 +23,10 @@ class Comment
     #[ORM\Column]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    #[ORM\ManyToOne(inversedBy: 'commmentTricks')]
-    private ?Tricks $tricks = null;
+    #[ORM\ManyToOne(inversedBy: 'commments')]
+    private ?Trick $trick = null;
 
-    #[ORM\ManyToOne(inversedBy: 'comment')]
+    #[ORM\ManyToOne(inversedBy: 'comments')]
     private ?User $user = null;
 
     public function getId(): ?int
@@ -82,14 +82,14 @@ class Comment
         return $this;
     }
 
-    public function getTricks(): ?Tricks
+    public function getTrick(): ?Trick
     {
-        return $this->tricks;
+        return $this->trick;
     }
 
-    public function setTricks(?Tricks $tricks): self
+    public function setTrick(?Trick $trick): self
     {
-        $this->tricks = $tricks;
+        $this->trick = $trick;
 
         return $this;
     }

@@ -4,13 +4,12 @@ namespace App\DataFixtures;
 
 use App\Entity\Comment;
 use App\Entity\Image;
-use App\Entity\Tricks;
+use App\Entity\Trick;
 use App\Entity\User;
 use App\Entity\Video;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
-use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 
@@ -68,7 +67,7 @@ class UserFixtures extends Fixture
         foreach ($tricksName as $trickName)
         {
            
-            $trick = new Tricks();
+            $trick = new Trick();
             $trick->setName($trickName);
             $trick->setDescription($faker->paragraph( 5, true));
             
@@ -83,7 +82,7 @@ class UserFixtures extends Fixture
             {
                 $image = new Image();
                 $image->setPathImg('img/tricks/' . $trick->getName() . ' ' . $k . '.jpg');
-                $image->setTricks($trick);
+                $image->setTrick($trick);
                 $manager->persist($image);
             }
           
@@ -93,7 +92,7 @@ class UserFixtures extends Fixture
             {
             $video = new Video();
             $video->setUrlVideo('https://www.youtube.com/embed/tHHxTHZwFUw');
-            $video->setTricks($trick);      
+            $video->setTrick($trick);      
             $manager->persist($video);
             }
             // 0 to 30 Comment by Trick
@@ -104,7 +103,7 @@ class UserFixtures extends Fixture
                 $comment->setCreatedAt($date);
                 $comment->setUpdatedAt($date);
                $comment->setUser($faker->randomElement($users));
-               $comment->setTricks($trick);
+               $comment->setTrick($trick);
                 
                 $manager->persist($comment);
             } 

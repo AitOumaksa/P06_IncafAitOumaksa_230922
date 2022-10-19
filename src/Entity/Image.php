@@ -16,8 +16,8 @@ class Image
     #[ORM\Column(length: 255)]
     private ?string $pathImg = null;
 
-    #[ORM\ManyToOne(inversedBy: 'image')]
-    private ?Tricks $tricks = null;
+    #[ORM\ManyToOne(inversedBy: 'images')]
+    private ?Trick $trick = null;
 
     public function getId(): ?int
     {
@@ -36,14 +36,14 @@ class Image
         return $this;
     }
 
-    public function getTricks(): ?Tricks
+    public function getTrick(): ?Trick
     {
-        return $this->tricks;
+        return $this->trick;
     }
 
-    public function setTricks(?Tricks $tricks): self
+    public function setTrick(?Trick $trick): self
     {
-        $this->tricks = $tricks;
+        $this->trick = $trick;
 
         return $this;
     }

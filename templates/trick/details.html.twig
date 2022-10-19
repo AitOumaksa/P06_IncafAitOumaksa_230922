@@ -9,7 +9,7 @@
             <div class="col-md-10 col-md-offset-1 mt-5 mb-4"> 
                              
                 <div class="card mt-5">
-                    <img class="card-img-top" src="{{ asset('assets/figures/' ~  trick.image.first.pathImg)}}" alt="Stalefish-main">
+                    <img class="card-img-top" src="{{ asset('assets/figures/' ~  trick.images.first.pathImg)}}" alt="Stalefish-main">
                     <div class="card-body">
                         <ul class="list-inline trick-data">
                             <li class="list-inline-item">
@@ -41,14 +41,14 @@
                         <div class="container">
                            
                             <div class="row">
-                            {% for image in trick.image %}
+                            {% for image in trick.images %}
                                 <div class="col-md-3 col-sm-4 col-xs-6">  
                                 <a href="{{ asset('assets/figures/' ~  image.pathImg)}}" >                            
                                 <img class="img-thumbnail rounded" src="{{ asset('assets/figures/' ~  image.pathImg)}}" alt="image {{ trick.name }}"/>
                                 </a>
                                 </div>
                             {% endfor %}
-                            {% for video in trick.video %}
+                            {% for video in trick.videos %}
                             <div class="col-md-3 col-sm-4 col-xs-6">
                             <a href="{{ video.urlVideo }}" > 
                             <iframe width="500" height="315" class="img-thumbnail rounded" src="{{ video.urlVideo }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>

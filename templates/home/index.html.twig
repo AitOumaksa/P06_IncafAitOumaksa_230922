@@ -31,7 +31,7 @@
             </a>
             </h5>
         </div>
-        <img src="{{ asset('assets/figures/' ~  trick.image.first.pathImg)}}" class="card-img-top" alt="{{ trick.name }}">                     
+        <img src="{{ asset('assets/figures/' ~  trick.images.first.pathImg)}}" class="card-img-top" alt="{{ trick.name }}">                     
      <div class="card-footer pr-3 pl-3">
         <p class="mb-0 text-muted">
         {% if trick.updatedAt <= trick.createdAt %}
