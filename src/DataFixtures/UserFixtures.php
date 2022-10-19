@@ -92,7 +92,7 @@ class UserFixtures extends Fixture
             for ($l=0; $l<mt_rand(1, 2); $l++)
             {
             $video = new Video();
-            $video->setUrlVideo('https://www.youtube.com/watch?v=tHHxTHZwFUw');
+            $video->setUrlVideo('https://www.youtube.com/embed/tHHxTHZwFUw');
             $video->setTricks($trick);      
             $manager->persist($video);
             }

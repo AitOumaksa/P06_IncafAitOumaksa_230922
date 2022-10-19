@@ -4,7 +4,7 @@
 
 {% block main %}
           <!-- Start Trick -->
-    <div class=" mt-5">  
+    <div class="mt-5">  
         <div class="row justify-content-center mt-5">          
             <div class="col-md-10 col-md-offset-1 mt-5 mb-4"> 
                              
@@ -26,77 +26,46 @@
                             {% endif %}  
                              |                          
                             <li class="list-inline-item">
-                               {{ trick.catégory }}
+                             Catégorie :  {{ trick.catégory }}
+                            </li>
+                             | 
+                            <li class="list-inline-item">
+                             <i class="far fa-comments"></i> : 0
                             </li>
                         </ul>
                         <hr>
-                        <h4 class="card-title"><strong>{{ trick.name }}</strong></h4>
+                        <h4 class="card-title text-center"><strong>{{ trick.name }}</strong></h4>
                         <hr>
-                        <!-- Start Carousel -->
-                        <div class="row d-none d-lg-flex load-media">
-                                <div class="col-lg-6 col-md-12">
-                                    <div id="carousel" class="carousel slide mt-3 mb-2" data-ride="carousel">
-                                        <ol class="carousel-indicators">
-                                            <li data-target=".carousel" data-slide-to="0"  class="active" ></li>
-                                        </ol>
-                                        <div class="carousel-inner enlarge">
-                                         {% for image in trick.image %}
-                                        <div class="carousel-item  active ">
-                                            <img class="d-block image-carousel" src="{{ asset('assets/figures/' ~  image.pathImg)}}" alt="{{ trick.name }}">
-                                        </div>
-                                        {% endfor %}
-                                                    
-                                        </div>
-                                        <a class="carousel-control-prev" href="#carousel" data-slide="prev">
-                                            <span class="carousel-control-prev-icon"></span>
-                                        </a>
-                                        <a class="carousel-control-next" href="#carousel" data-slide="next">
-                                            <span class="carousel-control-next-icon"></span>
-                                        </a> 
-                                    </div>
-                        </div>                                          
-                        <div class="col-lg-6 col-md-12">
-                                    <div id="carousel-v" class="carousel slide mt-3 mb-2" data-ride="carousel">
-                                        <ol class="carousel-indicators">
-                                            <li data-target="#carousel-v" data-slide-to="0"  class="active" ></li>
-                                            <li data-target="#carousel-v" data-slide-to="1" ></li>
-                                        </ol>
-                                        <div class="carousel-inner">
-                                        <div class="carousel-item  active ">
-                                        <iframe src="https://www.youtube.com/embed/0Oez89EoE_c" allowfullscreen></iframe>
-                                        </div>
-                                        <div class="carousel-item ">
-                                        <iframe src="https://www.youtube.com/embed/f9FjhCt_w2U" allowfullscreen></iframe>
-                                        </div>
-                                                    
-                                        </div>
-                                        <a class="carousel-control-prev" href="#carousel-v" data-slide="prev">
-                                        <span class="carousel-control-prev-icon"></span>
-                                        </a>
-                                        <a class="carousel-control-next" href="#carousel-v" data-slide="next">
-                                        <span class="carousel-control-next-icon"></span>
-                                        </a> 
-                                    </div>
-                                </div>                                                  
-                        </div>                      
-                            <div class="text-center">
-                                <a href="#" id="loadMedia" class="d-md-block d-lg-none">
-                                    <button class="btn btn-outline-secondary">Afficher les médias</button>
-                                </a>
-                                <a href="#" id="hideMedia" class="d-none d-md-none d-lg-none">
-                                    <button class="btn btn-outline-secondary mt-3">Masquer les médias</button>
-                                </a>
-                            </div>
-                        <!-- End Carousel -->
-                        <hr>
-                        <h5 class="card-title">Description</h5>
- 
-                        <p class="card-text text-justify">{{ trick.description }}</page>
-                        </div>
+                        <!-- Start gallery picture -->
 
+                        <div class="container">
+                           
+                            <div class="row">
+                            {% for image in trick.image %}
+                                <div class="col-md-3 col-sm-4 col-xs-6">  
+                                <a href="{{ asset('assets/figures/' ~  image.pathImg)}}" >                            
+                                <img class="img-thumbnail rounded" src="{{ asset('assets/figures/' ~  image.pathImg)}}" alt="image {{ trick.name }}"/>
+                                </a>
+                                </div>
+                            {% endfor %}
+                            {% for video in trick.video %}
+                            <div class="col-md-3 col-sm-4 col-xs-6">
+                            <a href="{{ video.urlVideo }}" > 
+                            <iframe width="500" height="315" class="img-thumbnail rounded" src="{{ video.urlVideo }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            </a>
+                            </div>
+                            {% endfor %}
+
+                            </div>
+                           
+                        </div>
+                         <!-- End gallery picture -->
+                        <hr>
+                        <!-- Start Discription -->
+                        <h5 class="card-title">Description</h5>
+                        <p class="card-text text-justify">{{ trick.description }}</page>
+            </div>
     </div>                    
 </div>
-                <!--  End Trick -->
+<!--  End Trick -->
 {% endblock %}
-
-

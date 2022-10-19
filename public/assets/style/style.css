@@ -1,3 +1,10 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+  }
+  
+  body {
+    margin: 0;
+  }
 
 
 .bg-image{
@@ -14,8 +21,13 @@
 
     padding-top: 20rem;
 }
-.image-carousel{
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+
+.trick-video{
+    width: 100%;
+    height: 100%;
 }
+.block-carousel{
+    width: 20%;
+    height: 20%;
+}
+
