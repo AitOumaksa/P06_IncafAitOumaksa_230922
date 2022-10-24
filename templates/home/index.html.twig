@@ -13,9 +13,14 @@
 </div>
 </div>
 <!-- Background image -->
+
 <!--  Start Card of Tricks-->
 
-<div class="container-fluid">
+<div class="container-fluid d-flex justify-content-center row">
+<!-- Modal include-->
+{{  include ('./trick/add-trick.html.twig') }}
+
+
 <div class="container">
 <div id="trick-container" class="row">
     {% for trick in tricks %}
