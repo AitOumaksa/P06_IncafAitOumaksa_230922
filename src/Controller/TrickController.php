@@ -5,16 +5,15 @@ namespace App\Controller;
 use App\Entity\Image;
 use App\Entity\Trick;
 use App\Entity\User;
+use App\Entity\Video;
 use App\Form\TrickType;
+use App\Form\VideosType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\TrickRepository;
-use App\Service\Helpers;
-use App\Service\ResizeImage;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Request;
 
 
@@ -39,12 +38,15 @@ class TrickController extends AbstractController
         $user = $repository->findOneBy(['id' => $id]);
         $manager = $doctrine->getManager();
         $trick = new Trick();
-        $form = $this->createForm(TrickType::class,$trick); 
+        $Videos = new Video();
+        $form = $this->createForm(TrickType::class,$trick);  
         $form->remove('user');
         $form->remove('slug');
         $form->remove('createdAt');
         $form->remove('updatedAt');
         $form->handleRequest($request);
+
+
         if($form->isSubmitted() && $form->isValid()){
             $images = $form->get('images')->getData();
             foreach($images as $image){
@@ -54,6 +56,12 @@ class TrickController extends AbstractController
                 $img = new Image();
                 $img->setPathImg($path.$fichier);
                 $trick->addImage($img);
+            }
+
+            foreach($trick->getVideos() as $video)
+            {
+                $video->setTrick($trick);
+                $manager->persist($video);
             }
 
             $trick->setCreatedAt(new \DateTimeImmutable());
