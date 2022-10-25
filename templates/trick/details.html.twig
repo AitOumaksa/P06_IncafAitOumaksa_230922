@@ -10,7 +10,7 @@
             <div class="col-md-10 col-md-offset-1 mt-5 mb-4"> 
                              
                 <div class="card mt-5  shadow p-3 mb-5 bg-body rounded">
-                    <img class="card-img-top" src="{{ asset('assets/figures/' ~  trick.images.first.pathImg)}}" alt="Stalefish-main">
+                    <img class="card-img-top" src="{{ asset(trick.images.first.pathImg)}}" alt="Stalefish-main">
                     <div class="card-body">
                         <ul class="list-inline trick-data">
                             <li class="list-inline-item">
@@ -27,7 +27,7 @@
                             {% endif %}  
                              |                          
                             <li class="list-inline-item">
-                             Catégorie :  {{ trick.catégory }}
+                             Catégorie :  {{ trick.category }}
                             </li>
                              | 
                             <li class="list-inline-item">
@@ -44,8 +44,8 @@
                             <div class="row">
                             {% for image in trick.images %}
                                 <div class="col-md-3 col-sm-4 col-xs-6">  
-                                <a href="{{ asset('assets/figures/' ~  image.pathImg)}}" >                            
-                                <img class="img-thumbnail rounded" src="{{ asset('assets/figures/' ~  image.pathImg)}}" alt="image {{ trick.name }}"/>
+                                <a href="{{ asset(image.pathImg)}}" >                            
+                                <img class="img-thumbnail rounded" src="{{ asset(image.pathImg)}}" alt="image {{ trick.name }}"/>
                                 </a>
                                 </div>
                             {% endfor %}

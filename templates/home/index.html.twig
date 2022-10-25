@@ -17,9 +17,18 @@
 <!--  Start Card of Tricks-->
 
 <div class="container-fluid d-flex justify-content-center row">
-<!-- Modal include-->
-{{  include ('./trick/add-trick.html.twig') }}
 
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-outline-info w-25" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+<a  href="{{ path('add.trick') }}"> Ajouter une figures</a>
+</button>
+<!-- Modal include-->
+
+ {% for message in app.session.flashBag.get('success') %}
+    <div class="alert alert-success" role="alert">
+    {{message}}
+    </div>
+    {% endfor %}
 
 <div class="container">
 <div id="trick-container" class="row">
@@ -36,7 +45,9 @@
             </a>
             </h5>
         </div>
-        <img src="{{ asset('assets/figures/' ~  trick.images.first.pathImg)}}" class="card-img-top" alt="{{ trick.name }}">                     
+       
+        <img src="{{ asset(trick.images.first.pathImg)}}" class="card-img-top" alt="{{ trick.name }}">
+                          
      <div class="card-footer pr-3 pl-3">
         <p class="mb-0 text-muted">
         {% if trick.updatedAt <= trick.createdAt %}

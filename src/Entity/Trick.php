@@ -23,7 +23,7 @@ class Trick
     private ?string $description = null;
 
     #[ORM\Column(length: 100)]
-    private ?string $catégory = null;
+    private ?string $category = null;
 
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
@@ -37,7 +37,7 @@ class Trick
     #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Comment::class)]
     private Collection $commments;
 
-    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Image::class)]
+    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Image::class,cascade:["persist"])]
     private Collection $images;
 
     #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Video::class)]
@@ -82,14 +82,14 @@ class Trick
         return $this;
     }
 
-    public function getCatégory(): ?string
+    public function getCategory(): ?string
     {
-        return $this->catégory;
+        return $this->category;
     }
 
-    public function setCatégory(string $catégory): self
+    public function setCategory(string $category): self
     {
-        $this->catégory = $catégory;
+        $this->category = $category;
 
         return $this;
     }

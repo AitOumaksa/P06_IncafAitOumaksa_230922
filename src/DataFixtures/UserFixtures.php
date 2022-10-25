@@ -74,14 +74,14 @@ class UserFixtures extends Fixture
             $trick->setCreatedAt($date);
             $trick->setUpdatedAt($date);
             $trick->setSlug($trickName);
-            $trick->setCatégory($faker->randomElement($category));
+            $trick->setCategory($faker->randomElement($category));
             $trick->setUser($faker->randomElement($users));
             $manager->persist($trick);
 
             for ($k=1; $k<4; $k++)
             {
                 $image = new Image();
-                $image->setPathImg('img/tricks/' . $trick->getName() . ' ' . $k . '.jpg');
+                $image->setPathImg('assets/figures/img/tricks/' . $trick->getName() . ' ' . $k . '.jpg');
                 $image->setTrick($trick);
                 $manager->persist($image);
             }
