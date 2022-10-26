@@ -38,8 +38,9 @@
 
 
  <script>
+ 
  const addFormToCollection = (e) => {
- const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
+  const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
 
   const item = document.createElement('li');
 
@@ -54,32 +55,10 @@
   collectionHolder.appendChild(item);
 
   collectionHolder.dataset.index++;
-};
-
- document.querySelectorAll('.add_item_link')
-  .forEach(btn => {
-      btn.addEventListener("click", addFormToCollection)
-});
- document.querySelectorAll('.add_item_img')
-  .forEach(btn => {
-      btn.addEventListener("click", addFormToCollection)
-});
-
-
-document
-    .querySelectorAll('ul.tags li')
-    .forEach((tag) => {
-        addTagFormDeleteLink(tag)
-    })
-
-// ... the rest of the block from above
-
-const addFormToCollection = (e) => {
-    // ...
-
-    // add a delete link to the new form
+  
+  // add a delete link to the new form
     addTagFormDeleteLink(item);
-}
+};
 
 const addTagFormDeleteLink = (item) => {
     const removeFormButton = document.createElement('button');
@@ -93,6 +72,25 @@ const addTagFormDeleteLink = (item) => {
         item.remove();
     });
 }
+ 
+ document
+  .querySelectorAll('.add_item_link')
+  .forEach(btn => {
+      btn.addEventListener("click", addFormToCollection)
+  });
+
+  document
+  .querySelectorAll('.add_item_img')
+  .forEach(btn => {
+      btn.addEventListener("click", addFormToCollection)
+  });
+  
+  document
+    .querySelectorAll('ul.tags li')
+    .forEach((tag) => {
+        addTagFormDeleteLink(tag)
+    })
+    
 
 
  </script>
