@@ -76,12 +76,15 @@
 
 
 <!-- Start comment-->
+  
 <section class = "" >
+          
             <div class="row justify-content-center mt-5">
                 <div class="row d-flex justify-content-center mt-4 my-4">
                 <div class="col-md-10 col-md-offset-1 shadow p-3 mb-5 bg-body rounded">
                 <div class="card text-dark border border-0">
                     <div class="card-body p-4">
+                     {% if trick.commments is not empty %}
                         <h4 class="mb-4">Commentaires</h4>
                         {% for comment in trick.commments %}
                         <div class="d-flex flex-start border-bottom border-2 mb-3">
@@ -108,8 +111,12 @@
                             </div>
                            
                         </div>
-                   
                         {% endfor %}
+                        {% else %}
+                            <div class="alert alert-primary" role="alert">
+                                Y'a aucun commentaire dans cette figure!
+                            </div>
+                        {% endif %}
                     </div>
 
                 </div>

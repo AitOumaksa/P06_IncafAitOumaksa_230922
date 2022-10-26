@@ -14,7 +14,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 
 
-class UserFixtures extends Fixture 
+class UserFixtures extends Fixture
 {
     private UserPasswordHasherInterface $passwordHasher;
 
@@ -22,15 +22,15 @@ class UserFixtures extends Fixture
     {
         $this->passwordHasher = $passwordHasher;
     }
-  
+
 
     public function load(ObjectManager $manager): void
     {
-      
+
         // $product = new Product();
         // $manager->persist($product);
 
-        $faker =Factory::create('fr_FR');
+        $faker = Factory::create('fr_FR');
         $users = [];
         $genders = ['male', 'female'];
         $gender = $faker->randomElement($genders);
@@ -49,28 +49,25 @@ class UserFixtures extends Fixture
         $manager->persist($admin);
 
         //User
-        for ($i=1; $i<=3;$i++) 
-        {
+        for ($i = 1; $i <= 3; $i++) {
             $user = new User();
-            
+
             $user->setUserName($faker->name);
             $user->setEmail("user$i@gmail.com");
             $user->setPassword($this->passwordHasher->hashPassword($user, 'admin'));
-            $user->setAvatar('https://randomuser.me/api/portraits/' . ($gender == 'male' ? 'men/' : 'women/') . $faker->numberBetween(1,99) . '.jpg');
+            $user->setAvatar('https://randomuser.me/api/portraits/' . ($gender == 'male' ? 'men/' : 'women/') . $faker->numberBetween(1, 99) . '.jpg');
             $user->setCreatedAt($date);
             $user->setUpdatedAt($date);
             $users[] = $user;
             $manager->persist($user);
-          
         }
         //Génerate tricks 
-        foreach ($tricksName as $trickName)
-        {
-           
+        foreach ($tricksName as $trickName) {
+
             $trick = new Trick();
             $trick->setName($trickName);
-            $trick->setDescription($faker->paragraph( 5, true));
-            
+            $trick->setDescription($faker->paragraph(5, true));
+
             $trick->setCreatedAt($date);
             $trick->setUpdatedAt($date);
             $trick->setSlug($trickName);
@@ -78,40 +75,35 @@ class UserFixtures extends Fixture
             $trick->setUser($faker->randomElement($users));
             $manager->persist($trick);
 
-            for ($k=1; $k<4; $k++)
-            {
+            for ($k = 1; $k < 4; $k++) {
                 $image = new Image();
                 $image->setPathImg('assets/figures/img/tricks/' . $trick->getName() . ' ' . $k . '.jpg');
                 $image->setTrick($trick);
                 $manager->persist($image);
             }
-          
+
 
             // 1 to 2 Video by Trick
-            for ($l=0; $l<mt_rand(1, 2); $l++)
-            {
-            $video = new Video();
-            $video->setUrlVideo('https://www.youtube.com/embed/tHHxTHZwFUw');
-            $video->setTrick($trick);      
-            $manager->persist($video);
+            for ($l = 0; $l < mt_rand(1, 2); $l++) {
+                $video = new Video();
+                $video->setUrlVideo('https://www.youtube.com/embed/tHHxTHZwFUw');
+                $video->setTrick($trick);
+                $manager->persist($video);
             }
             // 0 to 30 Comment by Trick
-            for ($m=0; $m<mt_rand(0, 30); $m++)
-            {
+            for ($m = 0; $m < mt_rand(0, 30); $m++) {
                 $comment = new Comment();
                 $comment->setContent($faker->sentence(mt_rand(1, 5)));
                 $comment->setCreatedAt($date);
                 $comment->setUpdatedAt($date);
-               $comment->setUser($faker->randomElement($users));
-               $comment->setTrick($trick);
-                
-                $manager->persist($comment);
-            } 
+                $comment->setUser($faker->randomElement($users));
+                $comment->setTrick($trick);
 
+                $manager->persist($comment);
+            }
         }
 
-        
+
         $manager->flush();
     }
- 
 }
