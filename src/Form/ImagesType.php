@@ -7,6 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 
 class ImagesType extends AbstractType
 {
@@ -15,6 +16,16 @@ class ImagesType extends AbstractType
         $builder
             ->add('pathImg' ,  FileType::class, ['label' => 'Images de la figure',
             'mapped' => false,
+            'constraints' => [
+                new File([
+                    'mimeTypes' => [
+                        'image/jpeg',
+                        'image/png',
+                        'image/jpg',
+                    ],
+                    'mimeTypesMessage' => 'Le format d\'image n\'est pas bonne',
+                ])
+            ],
             'attr' => [
                 'placeholder' => "Ajouter une image"
                 

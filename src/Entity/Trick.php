@@ -7,8 +7,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: TrickRepository::class)]
+#[UniqueEntity(fields: "name", message: "Une figure possède déjà ce nom, merci de le modifier")]
 class Trick
 {
     #[ORM\Id]
@@ -16,13 +19,17 @@ class Trick
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 200 , unique: true)]
+    #[ORM\Column(length: 200, unique: true)]
+    #[Assert\NotBlank(message: "Veuillez renseigner ce champ")]
+    #[Assert\Length(min: 3, minMessage: "Veuillez avoir au moins 4 caractères", max: 50, maxMessage: "Le nom ne doit pas faire plus de 50 caractères")]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\Length(min: 20, minMessage: "La description doit faire au moins 20 caractères")]
     private ?string $description = null;
 
     #[ORM\Column(length: 100)]
+    #[Assert\Length(min: 3, minMessage: "Veuillez avoir au moins 4 caractères", max: 50, maxMessage: "Le group ne doit pas faire plus de 50 caractères")]
     private ?string $category = null;
 
     #[ORM\Column(length: 255)]
@@ -37,7 +44,7 @@ class Trick
     #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Comment::class)]
     private Collection $commments;
 
-    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Image::class, cascade:["persist"])]
+    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Image::class, cascade: ["persist"])]
     private Collection $images;
 
     #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Video::class,  cascade: ['persist'])]
@@ -231,8 +238,8 @@ class Trick
 
         return $this;
     }
-    
-    
+
+
     public function getMainImage(): ?Image
     {
         return $this->mainImage;
