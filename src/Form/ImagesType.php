@@ -2,20 +2,22 @@
 
 namespace App\Form;
 
-use App\Entity\Video;
+use App\Entity\Image;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\UrlType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-
-class VideosType extends AbstractType
+class ImagesType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('urlVideo' ,  UrlType::class,['label' => 'Lien video','attr' => [
-                'placeholder' => "Ajouter un lien"
+            ->add('pathImg' ,  FileType::class, ['label' => 'Images de la figure',
+            'mapped' => false,
+            'attr' => [
+                'placeholder' => "Ajouter une image"
+                
             ]])
         ;
     }
@@ -23,7 +25,7 @@ class VideosType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Video::class,
+            'data_class' => Image::class,
         ]);
     }
 }

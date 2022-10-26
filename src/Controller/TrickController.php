@@ -38,30 +38,24 @@ class TrickController extends AbstractController
         $user = $repository->findOneBy(['id' => $id]);
         $manager = $doctrine->getManager();
         $trick = new Trick();
-        $Videos = new Video();
         $form = $this->createForm(TrickType::class,$trick);  
-        $form->remove('user');
-        $form->remove('slug');
-        $form->remove('createdAt');
-        $form->remove('updatedAt');
         $form->handleRequest($request);
-
-
         if($form->isSubmitted() && $form->isValid()){
-            $images = $form->get('images')->getData();
-            foreach($images as $image){
+
+            //$image = $form->get('images')->getData();
+            
+            foreach($form->get('images') as $imageForm){
+                $imageFile = $imageForm->get('pathImg')->getData();
                 $path='assets/figures/img/tricks/images_directory/';
-                $fichier = md5(uniqid()) . '.' . $image->guessExtension();
-                $image->move($this->getParameter('images_directory'), $fichier);
-                $img = new Image();
-                $img->setPathImg($path.$fichier);
-                $trick->addImage($img);
+                $fichier = md5(uniqid()) . '.' . $imageFile->guessExtension();
+                $imageFile->move($this->getParameter('images_directory'), $fichier);
+                $image = $imageForm->getData();
+                $image->setPathImg($path.$fichier);
             }
 
             foreach($trick->getVideos() as $video)
             {
-                $video->setTrick($trick);
-                $manager->persist($video);
+                $trick->addVideo($video);
             }
 
             $trick->setCreatedAt(new \DateTimeImmutable());
