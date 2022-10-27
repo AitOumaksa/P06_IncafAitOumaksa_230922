@@ -25,10 +25,12 @@ class Trick
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank(message: "Veuillez renseigner ce champ")]
     #[Assert\Length(min: 20, minMessage: "La description doit faire au moins 20 caractères")]
     private ?string $description = null;
 
     #[ORM\Column(length: 100)]
+    #[Assert\NotBlank(message: "Veuillez renseigner ce champ")]
     #[Assert\Length(min: 3, minMessage: "Veuillez avoir au moins 4 caractères", max: 50, maxMessage: "Le group ne doit pas faire plus de 50 caractères")]
     private ?string $category = null;
 
