@@ -20,17 +20,14 @@
     <div class="col">{{ form_row(form.name) }}</div>
     <div class="col">{{ form_row(form.category) }}</div>
     </div>
-    <div class = "mb-3">
-    <ul class="videos list-unstyled border border-info rounded"  data-index="{{ form.videos|length > 0 ? form.videos|last.vars.name + 1 : 0 }}" data-prototype="{{ form_widget(form.videos.vars.prototype)|e('html_attr') }}">
-    </ul>
+    
+     {{ form_row(form.videos) }} 
     <button type="button" class="add_item_link btn-info rounded text-light p-1" data-collection-holder-class="videos">Ajouter lien des videos</button>
-    </div>
-
-    <div class = "mb-3">
-    <ul class="images list-unstyled border border-info rounded"  data-index="{{ form.images|length > 0 ? form.images|last.vars.name + 1 : 0 }}" data-prototype="{{ form_widget(form.images.vars.prototype)|e('html_attr') }}">
-    </ul>
+   
+   
+    {{ form_row(form.images) }} 
     <button type="button" class="add_item_img btn-info rounded text-light p-1" data-collection-holder-class="images">Ajouter des images</button>
-    </div>
+    
      {{ form_rest(form) }}
      {{ form_end(form) }}
  </div>
