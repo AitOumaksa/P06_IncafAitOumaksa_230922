@@ -37,7 +37,12 @@
  <script>
  
  const addFormToCollection = (e) => {
-  const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
+  const collectionHolder = document.querySelector('form div[data-prototype]');
+
+  collectionHolder.forEach(collectionElt => {
+      collectionElt.classList.add("mystyle");
+    })
+  }
 
   const item = document.createElement('li');
   item.className ="border p-2 m-2";
