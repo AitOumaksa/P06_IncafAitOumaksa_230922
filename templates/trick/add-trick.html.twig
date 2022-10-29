@@ -22,7 +22,7 @@
     </div>
     
      {{ form_row(form.videos) }} 
-    <button type="button" class="add_item_link btn-info rounded text-light p-1" data-collection-holder-id="trick_videos">Ajouter lien des videos</button>
+      <button type="button" class="add_item_link btn-info rounded text-light p-1" data-collection-holder-id="trick_videos">Ajouter lien des videos</button>
    
    
     {{ form_row(form.images) }} 
@@ -43,11 +43,18 @@
   // Change this to div.childNodes to support multiple top-level nodes.
   return div.firstChild;
 }
+
+const initDataIndex = () => {
+   collectionHolderVideos = document.getElementById("trick_videos");
+   collectionHolderVideos.setAttribute('data-index', collectionHolderVideos.childElementCount);
+   collectionHolderImage = document.getElementById("trick_images");
+   collectionHolderImage .setAttribute('data-index', collectionHolderImage.childElementCount);
+}
  
  const addFormToCollection = (e) => {
   const collectionHolder = document.getElementById(e.currentTarget.dataset.collectionHolderId);
+   
   
- 
   const itemTxt = collectionHolder
     .dataset
     .prototype
@@ -87,25 +94,29 @@ const addTagFormDeleteLink = (item) => {
       btn.addEventListener("click", addFormToCollection)
   });
 
+
   document
   .querySelectorAll('.add_item_img')
   .forEach(btn => {
       btn.addEventListener("click", addFormToCollection)
   });
   
+  //Add delete button on video collection at refresh/load
   document
     .querySelectorAll('#trick_videos fieldset')
     .forEach((tag) => {
         addTagFormDeleteLink(tag)
     })
 
+//Add delete button on images collection at refresh/load
   document
     .querySelectorAll('#trick_images fieldset')
     .forEach((tag) => {
         addTagFormDeleteLink(tag)
     })
-    
 
+ //Init Data index at refresh/load   
+initDataIndex();
 
  </script>
 {% endblock %}
