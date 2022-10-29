@@ -38,6 +38,7 @@ class TrickType extends AbstractType
                 ],
                 'entry_options'  => [
                     'label'=> false,
+                    
                 ],
                 
             ])
