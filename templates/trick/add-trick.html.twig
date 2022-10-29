@@ -22,11 +22,11 @@
     </div>
     
      {{ form_row(form.videos) }} 
-    <button type="button" class="add_item_link btn-info rounded text-light p-1" data-collection-holder-class="videos">Ajouter lien des videos</button>
+    <button type="button" class="add_item_link btn-info rounded text-light p-1" data-collection-holder-id="trick_videos">Ajouter lien des videos</button>
    
    
     {{ form_row(form.images) }} 
-    <button type="button" class="add_item_img btn-info rounded text-light p-1" data-collection-holder-class="images">Ajouter des images</button>
+    <button type="button" class="add_item_img btn-info rounded text-light p-1" data-collection-holder-id="trick_images">Ajouter des images</button>
     
      {{ form_rest(form) }}
      {{ form_end(form) }}
@@ -35,25 +35,28 @@
 {% endblock %}
 {% block javascripts %}
  <script>
+
+ function createElementFromHTML(htmlString) {
+  var div = document.createElement('div');
+  div.innerHTML = htmlString.trim();
+
+  // Change this to div.childNodes to support multiple top-level nodes.
+  return div.firstChild;
+}
  
  const addFormToCollection = (e) => {
-  const collectionHolder = document.querySelector('form div[data-prototype]');
-
-  collectionHolder.forEach(collectionElt => {
-      collectionElt.classList.add("mystyle");
-    })
-  }
-
-  const item = document.createElement('li');
-  item.className ="border p-2 m-2";
-  item.innerHTML = collectionHolder
+  const collectionHolder = document.getElementById(e.currentTarget.dataset.collectionHolderId);
+  
+ 
+  const itemTxt = collectionHolder
     .dataset
     .prototype
     .replace(
       /__name__/g,
       collectionHolder.dataset.index
     );
-
+   item = createElementFromHTML(itemTxt);
+   console.log(item)
   collectionHolder.appendChild(item);
 
   collectionHolder.dataset.index++;
@@ -90,14 +93,14 @@ const addTagFormDeleteLink = (item) => {
       btn.addEventListener("click", addFormToCollection)
   });
   
-    document
-    .querySelectorAll('ul.images li')
+  document
+    .querySelectorAll('#trick_videos fieldset')
     .forEach((tag) => {
         addTagFormDeleteLink(tag)
     })
 
   document
-    .querySelectorAll('ul.videos li')
+    .querySelectorAll('#trick_images fieldset')
     .forEach((tag) => {
         addTagFormDeleteLink(tag)
     })

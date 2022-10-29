@@ -32,14 +32,16 @@ class TrickType extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => true ,
                 'label'=> false,
-                'by_reference' => false
+                'by_reference' => false,
+               
             ])
             ->add('videos', CollectionType::class, [
                 'entry_type' => VideosType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'label'=> false,
-                'by_reference' => false
+                'by_reference' => false,
+               
             ])
             ->add('Ajouter', SubmitType::class)
             ;
