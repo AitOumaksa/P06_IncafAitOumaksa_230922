@@ -20,17 +20,14 @@
     <div class="col">{{ form_row(form.name) }}</div>
     <div class="col">{{ form_row(form.category) }}</div>
     </div>
-    <div class = "mb-3">
-    <ul class="videos list-unstyled border border-info rounded"  data-index="{{ form.videos|length > 0 ? form.videos|last.vars.name + 1 : 0 }}" data-prototype="{{ form_widget(form.videos.vars.prototype)|e('html_attr') }}">
-    </ul>
-    <button type="button" class="add_item_link btn-info rounded text-light p-1" data-collection-holder-class="videos">Ajouter lien des videos</button>
-    </div>
-
-    <div class = "mb-3">
-    <ul class="images list-unstyled border border-info rounded"  data-index="{{ form.images|length > 0 ? form.images|last.vars.name + 1 : 0 }}" data-prototype="{{ form_widget(form.images.vars.prototype)|e('html_attr') }}">
-    </ul>
-    <button type="button" class="add_item_img btn-info rounded text-light p-1" data-collection-holder-class="images">Ajouter des images</button>
-    </div>
+    
+     {{ form_row(form.videos) }} 
+      <button type="button" class="add_item_link btn-info rounded text-light p-1" data-collection-holder-id="trick_videos">Ajouter lien des videos</button>
+   
+   
+    {{ form_row(form.images) }} 
+    <button type="button" class="add_item_img btn-info rounded text-light p-1" data-collection-holder-id="trick_images">Ajouter des images</button>
+    
      {{ form_rest(form) }}
      {{ form_end(form) }}
  </div>
@@ -38,20 +35,35 @@
 {% endblock %}
 {% block javascripts %}
  <script>
+
+ function createElementFromHTML(htmlString) {
+  var div = document.createElement('div');
+  div.innerHTML = htmlString.trim();
+
+  // Change this to div.childNodes to support multiple top-level nodes.
+  return div.firstChild;
+}
+
+const initDataIndex = () => {
+   collectionHolderVideos = document.getElementById("trick_videos");
+   collectionHolderVideos.setAttribute('data-index', collectionHolderVideos.childElementCount);
+   collectionHolderImage = document.getElementById("trick_images");
+   collectionHolderImage .setAttribute('data-index', collectionHolderImage.childElementCount);
+}
  
  const addFormToCollection = (e) => {
-  const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
-
-  const item = document.createElement('li');
-  item.className ="border p-2 m-2";
-  item.innerHTML = collectionHolder
+  const collectionHolder = document.getElementById(e.currentTarget.dataset.collectionHolderId);
+   
+  
+  const itemTxt = collectionHolder
     .dataset
     .prototype
     .replace(
       /__name__/g,
       collectionHolder.dataset.index
     );
-
+   item = createElementFromHTML(itemTxt);
+   console.log(item)
   collectionHolder.appendChild(item);
 
   collectionHolder.dataset.index++;
@@ -82,25 +94,29 @@ const addTagFormDeleteLink = (item) => {
       btn.addEventListener("click", addFormToCollection)
   });
 
+
   document
   .querySelectorAll('.add_item_img')
   .forEach(btn => {
       btn.addEventListener("click", addFormToCollection)
   });
   
-    document
-    .querySelectorAll('ul.images li')
-    .forEach((tag) => {
-        addTagFormDeleteLink(tag)
-    })
-
+  //Add delete button on video collection at refresh/load
   document
-    .querySelectorAll('ul.videos li')
+    .querySelectorAll('#trick_videos fieldset')
     .forEach((tag) => {
         addTagFormDeleteLink(tag)
     })
-    
 
+//Add delete button on images collection at refresh/load
+  document
+    .querySelectorAll('#trick_images fieldset')
+    .forEach((tag) => {
+        addTagFormDeleteLink(tag)
+    })
+
+ //Init Data index at refresh/load   
+initDataIndex();
 
  </script>
 {% endblock %}

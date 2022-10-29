@@ -16,7 +16,6 @@ class ImagesType extends AbstractType
         $builder
             ->add('pathImg' ,  FileType::class, ['label' => 'Images de la figure',
             'mapped' => false,
-            'multiple'=> true ,
             'constraints' => [
                 new File([
                     'mimeTypes' => [
