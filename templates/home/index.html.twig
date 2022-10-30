@@ -23,23 +23,24 @@
 
     <!-- Start Card of Tricks -->
 
-    <div class="container-fluid d-flex justify-content-center row">
+    <div class="container-fluid m-0 p0 d-flex justify-content-center row">
       <!-- Button trigger modal -->
       <button type="button"
-        class="btn btn-outline-info w-25"
+        class="btn btn-outline-info w-auto"
         data-bs-toggle="modal"
         data-bs-target="#staticBackdrop">
         <a class = "text-decoration-none" href="{{ path('add.trick') }}">Ajouter une figures</a>
       </button>
       <!-- Modal include -->
 
-      {% for message in app.session.flashBag.get('success') %}
-        <div class="alert alert-success" role="alert">
+     
+
+      <div class="container">
+           {% for message in app.session.flashBag.get('success') %}
+        <div class="row justify-content-center m-3 alert alert-success" role="alert">
           {{ message }}
         </div>
       {% endfor %}
-
-      <div class="container">
         <div id="trick-container" class="row">
           {% for trick in tricks %}
             <div class="col-lg-4 col-md-6 col-sm-12 py-4 ml-3"

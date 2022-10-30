@@ -37,12 +37,8 @@ class TrickController extends AbstractController
                 $image = $imageForm->getData();
                 $image->setPathImg($path . $fichier);
             }
-
-            $trick->setCreatedAt(new \DateTimeImmutable());
-            $trick->setUpdatedAt(new \DateTimeImmutable());
             $trick->setSlug($trick->getName());
             $trick->setUser($user);
-
             $manager->persist($trick);
             $manager->flush();
 
