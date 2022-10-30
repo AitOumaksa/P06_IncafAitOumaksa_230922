@@ -1,5 +1,5 @@
 {% extends './base.html.twig' %}
-{% block title %}Ajouter une figures{% endblock %}
+{% block title %}SnowTricks - Nouveau firgure {% endblock %}
 {% block stylesheets %}{{ parent() }}{% endblock %}
 
 
@@ -9,25 +9,28 @@
  <!-- Background image -->
 <div class="bg-image opacity-75">
 <div class="bloc-title-home-page">
-<h1 class = "h1 d-flex justify-content-center text-center text-primary">Ajouter une figures</h1>
+<h1 class = "h1 d-flex justify-content-center text-center text-primary">SnowTricks</h1>
+ <p class="fs-3 d-flex justify-content-center p-3 text-center">
+    Nouveau - figure !
+  </p>
 </div>
 </div>
 <!-- add form-->
  <div class="row container col-md-10 col-md-offset-1 mt-5 mb-4 shadow p-3 mb-5 bg-body rounded">
-  <h1>Créer un nouveau trick :</h1>
+  <h1>Créer un nouveau figure :</h1>
     {{ form_start(form , {'attr': {'novalidate': 'novalidate'}}) }}
     <div class="row">
     <div class="col">{{ form_row(form.name) }}</div>
     <div class="col">{{ form_row(form.category) }}</div>
     </div>
-    
-     {{ form_row(form.videos) }} 
-      <button type="button" class="add_item_link btn-info rounded text-light p-1" data-collection-holder-id="trick_videos">Ajouter lien des videos</button>
-   
-   
-    {{ form_row(form.images) }} 
-    <button type="button" class="add_item_img btn-info rounded text-light p-1" data-collection-holder-id="trick_images">Ajouter des images</button>
-    
+    <div class="row">
+    <div class="col">{{ form_row(form.videos) }} 
+    <button type="button" class="add_item btn-info rounded text-light p-1" data-collection-holder-id="trick_videos"><i class="fas fa-plus"></i> Videos</button>
+    </div>
+    <div class="col">{{ form_row(form.images) }} 
+    <button type="button" class="add_item btn-info rounded text-light p-1" data-collection-holder-id="trick_images"><i class="fas fa-plus"></i> Images</button>
+    </div>
+    </div>
      {{ form_rest(form) }}
      {{ form_end(form) }}
  </div>
@@ -89,28 +92,16 @@ const addTagFormDeleteLink = (item) => {
 }
  
  document
-  .querySelectorAll('.add_item_link')
+  .querySelectorAll('.add_item')
   .forEach(btn => {
       btn.addEventListener("click", addFormToCollection)
   });
 
 
-  document
-  .querySelectorAll('.add_item_img')
-  .forEach(btn => {
-      btn.addEventListener("click", addFormToCollection)
-  });
   
-  //Add delete button on video collection at refresh/load
+  //Add delete button on collection at refresh/load
   document
-    .querySelectorAll('#trick_videos fieldset')
-    .forEach((tag) => {
-        addTagFormDeleteLink(tag)
-    })
-
-//Add delete button on images collection at refresh/load
-  document
-    .querySelectorAll('#trick_images fieldset')
+    .querySelectorAll('.collection')
     .forEach((tag) => {
         addTagFormDeleteLink(tag)
     })

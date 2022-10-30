@@ -33,11 +33,14 @@ class TrickType extends AbstractType
                 'allow_delete' => true ,
                 'label'=> false,
                 'by_reference' => false,
+                'attr' => ['class' => 'border  border-info border-2 rounded'],
                 'prototype_options'  => [
                     'label'=> false,
+                    'attr' => ['class' => 'collection'],
                 ],
                 'entry_options'  => [
                     'label'=> false,
+                    'attr' => ['class' => 'collection'],
                     
                 ],
                 
@@ -48,11 +51,14 @@ class TrickType extends AbstractType
                 'allow_delete' => true,
                 'label'=> false,
                 'by_reference' => false,
+                'attr' => ['class' => 'border border-info border-2 rounded'],
                 'prototype_options'  => [
                     'label'=> false,
+                    'attr' => ['class' => 'collection'],
                 ],
                 'entry_options'  => [
                     'label'=> false,
+                    'attr' => ['class' => 'collection'],
                 ],
             
             ])
