@@ -19,4 +19,6 @@
 ###< symfony/phpunit-bridge ###
 /public/node_modules/
 /public/assets/figures/
+/public/assets/figures/img
 
+/node_modules/

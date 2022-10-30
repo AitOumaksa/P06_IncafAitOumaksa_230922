@@ -62,7 +62,6 @@ class TrickType extends AbstractType
                 ],
             
             ])
-            ->add('Ajouter', SubmitType::class)
             ;
     }
 

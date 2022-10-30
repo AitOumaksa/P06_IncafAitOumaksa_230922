@@ -18,16 +18,6 @@ use Symfony\Component\HttpFoundation\Request;
 class TrickController extends AbstractController
 {
 
-    public function getUser(): User
-    {
-        if ($this->security->isGranted('ROLE_ADMIN')) {
-            $user = $this->security->getUser();
-            if ($user instanceof User) {
-                return $user;
-            }
-        }
-    }
-
     #[Route('/add', name: 'add.trick')]
     public function addTrick(ManagerRegistry $doctrine, Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -46,10 +36,6 @@ class TrickController extends AbstractController
                 $imageFile->move($this->getParameter('images_directory'), $fichier);
                 $image = $imageForm->getData();
                 $image->setPathImg($path . $fichier);
-            }
-
-            foreach ($trick->getVideos() as $video) {
-                $trick->addVideo($video);
             }
 
             $trick->setCreatedAt(new \DateTimeImmutable());

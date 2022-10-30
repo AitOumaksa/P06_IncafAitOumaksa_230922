@@ -16,23 +16,31 @@
 </div>
 </div>
 <!-- add form-->
- <div class="row container col-md-10 col-md-offset-1 mt-5 mb-4 shadow p-3 mb-5 bg-body rounded">
-  <h1>Créer un nouveau figure :</h1>
+<div class="row container col-md-10 col-md-offset-1 mt-5 mb-4 shadow p-3 mb-5 bg-body rounded d-flex flex-wrap">
+  <h1 class =" mb-3">Créer un nouveau figure :</h1>
     {{ form_start(form , {'attr': {'novalidate': 'novalidate'}}) }}
-    <div class="row">
-    <div class="col">{{ form_row(form.name) }}</div>
-    <div class="col">{{ form_row(form.category) }}</div>
+    <div class="row mb-3">
+    <div class="col-sm-6">{{ form_row(form.name) }}</div>
+    <div class="col-sm-6">{{ form_row(form.category) }}</div>
     </div>
-    <div class="row">
-    <div class="col">{{ form_row(form.videos) }} 
-    <button type="button" class="add_item btn-info rounded text-light p-1" data-collection-holder-id="trick_videos"><i class="fas fa-plus"></i> Videos</button>
+
+
+  <div class="row mb-3">
+    <div class="col-sm-6">{{ form_row(form.videos) }} 
+    <button type="button" class="add_item btn-info rounded text-light p-1 mb-3" data-collection-holder-id="trick_videos"><i class="fas fa-plus"></i> Videos</button>
     </div>
-    <div class="col">{{ form_row(form.images) }} 
-    <button type="button" class="add_item btn-info rounded text-light p-1" data-collection-holder-id="trick_images"><i class="fas fa-plus"></i> Images</button>
+    
+    <div class="col-sm-6">{{ form_row(form.images) }} 
+    <button type="button" class="add_item btn-info rounded text-light p-1 mb-3" data-collection-holder-id="trick_images"><i class="fas fa-plus"></i> Images</button>
     </div>
-    </div>
+  </div>
+  <div class="row">
+    <div class="col">{{ form_row(form.description) }} </div>
+  </div>
+     <button type="submit" class="btn btn-success btn-lg "><i class="fas fa-check"></i> Créer le trick !</button>
      {{ form_rest(form) }}
      {{ form_end(form) }}
+ </div>
  </div>
  </div>
 {% endblock %}
