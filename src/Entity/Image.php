@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ImageRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ImageRepository::class)]
 class Image
@@ -13,6 +14,7 @@ class Image
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Assert\Valid()]
     #[ORM\Column(length: 255)]
     private ?string $pathImg = null;
 
