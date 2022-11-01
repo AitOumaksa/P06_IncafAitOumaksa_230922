@@ -1,0 +1,32 @@
+{% extends './base.html.twig' %}
+{% block title %}SnowTricks - Modifier le commentaire
+{% endblock %}
+{% block stylesheets %}
+	{{ parent() }}
+{% endblock %}
+
+{% block main %}
+	<!-- Modal -->
+	<div
+		class="row d-flex justify-content-center">
+		<!-- Background image -->
+		<div class="bg-image opacity-75">
+			<div class="bloc-title-home-page">
+				<h1 class="h1 d-flex justify-content-center text-center text-primary">SnowTricks</h1>
+				<p class="fs-3 d-flex justify-content-center p-3 text-center">
+					Modifier - Le commentaire !
+				</p>
+			</div>
+		</div>
+		<!-- add form-->
+		<div class="row container col-md-10 col-md-offset-1 mt-5 mb-4 shadow p-3 mb-5 bg-body rounded d-flex flex-wrap">
+			<h1 class=" mb-3">Modifier le commentaire :</h1>
+			{{ form_start(form , {'attr': {'novalidate': 'novalidate'}}) }}
+			<div class="col">
+				{{ form_row(form.content) }}
+				<button type="submit" class="btn btn-success btn-lg ">Commenter</button>
+				{{ form_end(form) }}
+			</div>
+		</div>
+	</div>
+</div>{% endblock %}
