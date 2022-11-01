@@ -43,7 +43,7 @@
 					{% for trick in tricks %}
 						<div class="col-lg-4 col-md-6 col-sm-12 py-4 ml-3" id="list-Snowboard">
 							<div class="card shadow">
-								<div class="card-header">
+								<div class="card-header d-flex justify-content-between">
 									<h5 class="card-title mb-0">
 										<a href="{{ path( 'trick.details', { slug: trick.slug } ) }}" class="text-decoration-none">
 											<span class="responsive-logo-trick">
@@ -52,6 +52,11 @@
 											{{ trick.name }}
 										</a>
 									</h5>
+									<div>
+										<a href="{{ path('delete.trick', {'slug': trick.slug}) }}" onclick="return confirm(`Êtes-vous sûr de vouloir supprimer le trick : {{trick.name}} ?`)">
+											<i class="fas fa-trash-alt"></i>
+										</a>
+									</div>
 								</div>
 
 								<img src="{{ asset(trick.images.first.pathImg) }}" class="card-img-top" alt="{{ trick.name }}"/>
