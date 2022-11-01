@@ -2,16 +2,18 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Trick;
 use App\Entity\User;
+use App\Form\CommentType;
 use App\Form\TrickType;
+use App\Repository\CommentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\TrickRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -56,12 +58,49 @@ class TrickController extends AbstractController
     }
 
     #[Route('/{slug}', name: 'trick.details')]
-    public function getTrick(TrickRepository $repo, $slug): Response
+    public function getTrick(TrickRepository $repo, Request $request, $slug, CommentRepository $commentRepository, ManagerRegistry $doctrine, EntityManagerInterface $entityManager): Response
     {
         $trick = $repo->findOneBySlug($slug);
 
+        $id = 18;
+
+        $repository = $entityManager->getRepository(User::class);
+
+        $user = $repository->findOneBy(['id' => $id]);
+
+        $comments = $commentRepository->findBy(['trick' =>$trick->getId()], ['createdAt' => 'DESC']);
+
+        $comment = new Comment();
+
+        $form = $this->createForm(CommentType::class, $comment);
+
+        $manager = $doctrine->getManager();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $comment->setCreatedAt(new \DateTimeImmutable());
+            $comment->setUpdatedAt(new \DateTimeImmutable());
+            $comment->setTrick($trick);
+            $comment->setUser($user);
+
+            $manager->persist($comment);
+            $manager->flush();
+
+            $this->addFlash(
+                'success',
+                'Votre commentaire a bien été enregistré !'
+            );
+
+            return $this->redirectToRoute('trick.details', [
+                'slug' => $trick->getSlug()
+            ]);
+        }
+
         return $this->render('trick/details.html.twig', [
-            'trick' => $trick
+            'trick' => $trick,
+            'form' => $form->createView(),
+            'comments' => $comments
         ]);
     }
 
@@ -72,9 +111,6 @@ class TrickController extends AbstractController
         $trick = $repo->findOneBySlug($slug);
 
         $form = $this->createForm(TrickType::class, $trick);
-
-
-
 
         $manager = $doctrine->getManager();
 
@@ -120,17 +156,16 @@ class TrickController extends AbstractController
         ]);
     }
 
-    #[Route('/delete/{slug}', name : 'delete.trick')]
+    #[Route('/delete/{slug}', name: 'delete.trick')]
     public function delete(TrickRepository $repo, ManagerRegistry $doctrine, $slug)
     {
         $trick = $repo->findOneBySlug($slug);
-        
+
         $manager = $doctrine->getManager();
 
         $fileSystem = new Filesystem();
 
-        foreach($trick->getImages() as $image)
-        {
+        foreach ($trick->getImages() as $image) {
             $fileSystem->remove($image->getPathImg());
         }
 
@@ -139,7 +174,7 @@ class TrickController extends AbstractController
 
         $this->addflash(
             'success',
-            "Le trick <" .$trick->getName() ."> a été supprimé avec succès !"
+            "Le trick <" . $trick->getName() . "> a été supprimé avec succès !"
         );
 
         return $this->redirectToRoute('home');
