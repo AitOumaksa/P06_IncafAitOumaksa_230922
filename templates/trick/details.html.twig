@@ -105,11 +105,14 @@
 
 <!--Add comment-->
 <div class="row justify-content-center mt-5">
-<div class="col-md-10 col-md-offset-1 shadow p-3 mb-5 bg-body rounded">
-	<div class="comments text-center p-3">
-	
+	<div class="col-md-10 col-md-offset-1 shadow p-3 mb-5 bg-body rounded">
+		<div class="comments  p-3">
+			{{ form_start(form , {'attr': {'novalidate': 'novalidate'}}) }}
+			<div class="col">{{ form_row(form.content) }} 
+			<button type="submit" class="btn btn-success btn-lg ">Commenter</button>
+			{{ form_end(form) }}
+		</div>
 	</div>
-</div>
 </div>
 <!-- Start comment-->
 
@@ -120,9 +123,9 @@
 			<div class="col-md-10 col-md-offset-1 shadow p-3 mb-5 bg-body rounded">
 				<div class="card text-dark border border-0">
 					<div class="card-body p-4">
-						{% if trick.commments is not empty %}
+						{% if comments is not empty %}
 							<h4 class="mb-4">Commentaires</h4>
-							{% for comment in trick.commments %}
+							{% for comment in comments %}
 								<div class="d-flex flex-start border-bottom border-2 mb-3">
 									<img class="rounded-circle shadow-1-strong me-3" src="{{ asset(comment.user.avatar)}}" alt="avatar de {{comment.user.userName}}" width="60" height="60"/>
 									<div>
@@ -130,7 +133,7 @@
 										<div class="d-flex align-items-center mb-0">
 											{% if comment.updatedAt <= comment.createdAt %}
 												<p class="mb-0">
-													<small>
+													<small class = "pe-3">
 														Ajouté le :
 														{{comment.createdAt|date('d/m/Y',"Europe/Paris")}}</small>
 												</p>
@@ -142,7 +145,7 @@
 												</p>
 											{% endif %}
 											<a href="#!" class="link-muted">
-												<i class="fas fa-pencil-alt ms-2"></i>
+												<i class="fas fa-trash-alt"></i>
 											</a>
 										</div>
 										<p class="mb-3">
@@ -154,7 +157,7 @@
 							{% endfor %}
 						{% else %}
 							<div class="alert alert-primary" role="alert">
-								Y'a aucun commentaire dans cette figure!
+								Y'a aucun commentaire dans cette trick!
 							</div>
 						{% endif %}
 					</div>
