@@ -8,15 +8,20 @@
 
 {% block main %}
 	<!-- Start Trick -->
-	{% for message in app.session.flashBag.get('success') %}
+	<section>
+		<div class="mt-5">
+		{% for message in app.session.flashBag.get('success') %}
 		<div class="row justify-content-center m-3 alert alert-success" role="alert">
 			{{ message }}
 		</div>
 	{% endfor %}
-	<section>
-		<div class="mt-5">
+	{% for message in app.session.flashBag.get('danger') %}
+		<div class="row justify-content-center m-3 alert alert-danger" role="alert">
+			{{ message }}
+		</div>
+	{% endfor %}
 			<div class="row justify-content-center mt-5">
-				<div class="col-md-10 col-md-offset-1 mt-5 mb-4 p-0 mr-0 ml-0">
+				<div class="col-md-10 col-md-offset-1 mt-3 mb-3 p-0 mr-0 ml-0">
 
 					<div class="card mt-5  shadow p-3 mb-5 bg-body rounded">
 						<img class="card-img-top" src="{{ asset(trick.images.first.pathImg)}}" alt="Stalefish-main">
@@ -144,7 +149,7 @@
 															{{comment.updatedAt|date('d/m/Y',"Europe/Paris")}}</small>
 													</p>
 												{% endif %}
-												<a href="#!" class="link-muted">
+												<a href="{{ path('delete.comment', {'id': comment.id}) }}" class="link-muted" onclick="return confirm(`Êtes-vous sûr de vouloir supprimer votre commentaire ?`)">
 													<i class="fas fa-trash-alt"></i>
 												</a>
 											</div>
@@ -152,7 +157,6 @@
 												{{comment.content}}
 											</p>
 										</div>
-
 									</div>
 								{% endfor %}
 							{% else %}

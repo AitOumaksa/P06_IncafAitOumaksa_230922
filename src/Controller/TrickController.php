@@ -157,7 +157,7 @@ class TrickController extends AbstractController
     }
 
     #[Route('/delete/{slug}', name: 'delete.trick')]
-    public function delete(TrickRepository $repo, ManagerRegistry $doctrine, $slug)
+    public function deleteTrick(TrickRepository $repo, ManagerRegistry $doctrine, $slug)
     {
         $trick = $repo->findOneBySlug($slug);
 
