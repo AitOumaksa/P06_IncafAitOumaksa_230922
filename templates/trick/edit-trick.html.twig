@@ -1,0 +1,124 @@
+{% extends './base.html.twig' %}
+{% block title %}SnowTricks - Modifier la firgure {% endblock %}
+{% block stylesheets %}{{ parent() }}{% endblock %}
+
+
+ {% block main %}
+<!-- Modal -->
+<div class = "row d-flex justify-content-center">
+ <!-- Background image -->
+<div class="bg-image opacity-75">
+<div class="bloc-title-home-page">
+<h1 class = "h1 d-flex justify-content-center text-center text-primary">SnowTricks</h1>
+ <p class="fs-3 d-flex justify-content-center p-3 text-center">
+    Modification - Le trick !
+  </p>
+</div>
+</div>
+<!-- add form-->
+<div class="row container col-md-10 col-md-offset-1 mt-5 mb-4 shadow p-3 mb-5 bg-body rounded d-flex flex-wrap">
+  <h1 class =" mb-3">Modifier le trick :</h1>
+    {{ form_start(form , {'attr': {'novalidate': 'novalidate'}}) }}
+    <div class="row mb-3">
+    <div class="col-sm-6">{{ form_row(form.name) }}</div>
+    <div class="col-sm-6">{{ form_row(form.category) }}</div>
+    </div>
+
+
+  <div class="row mb-3">
+    <div class="col-sm-6">{{ form_row(form.videos) }} 
+    <button type="button" class="add_item btn-info rounded text-light p-1 mb-3"  data-collection-holder-id="trick_videos"><i class="fas fa-plus"></i> Videos</button>
+    </div>
+    
+    
+    <div class="col-sm-6">
+    {{ form_row(form.images) }}    
+    <button type="button" class="add_item btn-info rounded text-light p-1 mb-3" data-collection-holder-id="trick_images"><i class="fas fa-plus"></i> Images</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">{{ form_row(form.description) }} </div>
+  </div>
+     <button type="submit" class="btn btn-success btn-lg "><i class="fas fa-check"></i> Modifier le trick !</button>
+     {{ form_rest(form) }}
+     {{ form_end(form) }}
+ </div>
+ </div>
+ </div>
+{% endblock %}
+{% block javascripts %}
+ <script>
+
+ function createElementFromHTML(htmlString) {
+  var div = document.createElement('div');
+  div.innerHTML = htmlString.trim();
+
+  // Change this to div.childNodes to support multiple top-level nodes.
+  return div.firstChild;
+}
+
+const initDataIndex = () => {
+   collectionHolderVideos = document.getElementById("trick_videos");
+   collectionHolderVideos.setAttribute('data-index', collectionHolderVideos.childElementCount);
+   collectionHolderImage = document.getElementById("trick_images");
+   collectionHolderImage .setAttribute('data-index', collectionHolderImage.childElementCount);
+}
+
+ 
+ const addFormToCollection = (e) => {
+  const collectionHolder = document.getElementById(e.currentTarget.dataset.collectionHolderId);
+   
+  
+  const itemTxt = collectionHolder
+    .dataset
+    .prototype
+    .replace(
+      /__name__/g,
+      collectionHolder.dataset.index
+    );
+   item = createElementFromHTML(itemTxt);
+   console.log(item)
+  collectionHolder.appendChild(item);
+
+  collectionHolder.dataset.index++;
+  
+  // add a delete link to the new form
+    addTagFormDeleteLink(item);
+};
+
+const addTagFormDeleteLink = (item) => {
+    const removeFormButton = document.createElement('button');
+    removeFormButton.classList.add('btn-danger')
+    removeFormButton.classList.add('rounded')
+    removeFormButton.classList.add('text-light')
+    removeFormButton.innerText = 'Suprimer';
+
+    item.append(removeFormButton);
+
+    removeFormButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        // remove the li for the tag form
+        item.remove();
+    });
+}
+ 
+ document
+  .querySelectorAll('.add_item')
+  .forEach(btn => {
+      btn.addEventListener("click", addFormToCollection)
+  });
+
+
+  
+  //Add delete button on collection at refresh/load
+  document
+    .querySelectorAll('.collection')
+    .forEach((tag) => {
+        addTagFormDeleteLink(tag)
+    })
+
+ //Init Data index at refresh/load   
+initDataIndex();
+
+ </script>
+{% endblock %}

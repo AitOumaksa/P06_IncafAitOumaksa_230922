@@ -12,7 +12,7 @@ class HomeController extends AbstractController
     #[Route('/', name: 'home')]
     public function index(TrickRepository $repo): Response
     {
-        $tricks = $repo->findBy([], ['createdAt' => 'DESC']);
+        $tricks = $repo->findBy([], ['updatedAt' => 'DESC']);
 
         return $this->render('home/index.html.twig', [
             'tricks' => $tricks
