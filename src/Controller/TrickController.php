@@ -31,7 +31,7 @@ class TrickController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             foreach ($form->get('images') as $imageForm) {
-                $imageFile = $imageForm->get('pathImg')->getData();
+                $imageFile = $imageForm->get('imageFile')->getData();
                 $path = 'assets/figures/img/tricks/images_directory/';
                 $fichier = md5(uniqid()) . '.' . $imageFile->guessExtension();
                 $imageFile->move($this->getParameter('images_directory'), $fichier);
@@ -81,19 +81,21 @@ class TrickController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            foreach ($trick->getImages() as $oldImage)
-                $oldImageFile = $oldImage->getPathImg();
-            if ($oldImageFile) {
-                $filesystem->remove($oldImageFile);
-            }
-
+           // foreach ($trick->getImages() as $oldImage)
+             //   $oldImageFile = $oldImage->getPathImg();
+            //if ($oldImageFile) {
+               // $filesystem->remove($oldImageFile);
+            //}
+            
             foreach ($form->get('images') as $imageForm) {
-                $imageFile = $imageForm->get('pathImg')->getData();
+                $imageFile = $imageForm->get('imageFile')->getData();
+                if($imageFile){ 
                 $path = 'assets/figures/img/tricks/images_directory/';
                 $fichier = md5(uniqid()) . '.' . $imageFile->guessExtension();
                 $imageFile->move($this->getParameter('images_directory'), $fichier);
                 $image = $imageForm->getData();
                 $image->setPathImg($path . $fichier);
+                }
             }
             $trick->setUpdatedAt(new \DateTimeImmutable());
             $trick->setSlug($trick->getName());

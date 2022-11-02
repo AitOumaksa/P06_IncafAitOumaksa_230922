@@ -29,10 +29,11 @@
     <div class="col-sm-6">{{ form_row(form.videos) }} 
     <button type="button" class="add_item btn-info rounded text-light p-1 mb-3"  data-collection-holder-id="trick_videos"><i class="fas fa-plus"></i> Videos</button>
     </div>
-    
-    
     <div class="col-sm-6">
-    {{ form_row(form.images) }}    
+    {% for image in form.images %}  
+    <img src="{{ asset( image.vars.data.pathImg ) }}" class="card-img-top"/>
+    {{ form_row(image) }}  
+    {% endfor %}   
     <button type="button" class="add_item btn-info rounded text-light p-1 mb-3" data-collection-holder-id="trick_images"><i class="fas fa-plus"></i> Images</button>
     </div>
   </div>
