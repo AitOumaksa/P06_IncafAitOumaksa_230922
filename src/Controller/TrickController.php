@@ -11,6 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\TrickRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -43,7 +44,7 @@ class TrickController extends AbstractController
             $manager->persist($trick);
             $manager->flush();
 
-            $this->addFlash('success', 'la Figure ' . $trick->getName() . ' est ajouter avec succée');
+            $this->addFlash('success', 'la Figure <' . $trick->getName() . '> est ajouter avec succée');
 
             return $this->redirectToRoute('home');
         } else {
@@ -105,7 +106,7 @@ class TrickController extends AbstractController
 
             $this->addFlash(
                 'success',
-                'La figure ' . $trick->getName() . '  a bien été modifié !'
+                'La figure <' . $trick->getName() . '>  a bien été modifié !'
             );
 
             return $this->redirectToRoute('trick.details', [
@@ -117,5 +118,30 @@ class TrickController extends AbstractController
             'form' => $form->createView(),
             'trick' => $trick
         ]);
+    }
+
+    #[Route('/delete/{slug}', name : 'delete.trick')]
+    public function delete(TrickRepository $repo, ManagerRegistry $doctrine, $slug)
+    {
+        $trick = $repo->findOneBySlug($slug);
+        
+        $manager = $doctrine->getManager();
+
+        $fileSystem = new Filesystem();
+
+        foreach($trick->getImages() as $image)
+        {
+            $fileSystem->remove($image->getPathImg());
+        }
+
+        $manager->remove($trick);
+        $manager->flush();
+
+        $this->addflash(
+            'success',
+            "Le trick <" .$trick->getName() ."> a été supprimé avec succès !"
+        );
+
+        return $this->redirectToRoute('home');
     }
 }

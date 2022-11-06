@@ -43,14 +43,18 @@ class Trick
     #[ORM\Column]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Comment::class)]
+    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Comment::class,  orphanRemoval: true)]
     private Collection $commments;
 
+<<<<<<< HEAD
+    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Image::class, cascade: ["persist" , "remove"])]
+=======
     
     #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Image::class, cascade: ["persist"])]
+>>>>>>> 6a8be61bb6932d4b01b986a8bf5030375e5009dc
     private Collection $images;
 
-    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Video::class,  cascade: ['persist'])]
+    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Video::class,  cascade: ['persist', "remove"])]
     private Collection $videos;
 
     #[ORM\ManyToOne(inversedBy: 'tricks')]
