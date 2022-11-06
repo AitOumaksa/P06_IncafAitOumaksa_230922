@@ -46,6 +46,7 @@ class Trick
     #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Comment::class)]
     private Collection $commments;
 
+    
     #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Image::class, cascade: ["persist"])]
     private Collection $images;
 

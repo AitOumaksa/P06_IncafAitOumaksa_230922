@@ -26,10 +26,7 @@ class ImagesType extends AbstractType
                     'mimeTypesMessage' => 'Le format d\'image n\'est pas bon',
                 ])
             ],
-            'attr' => [
-                'placeholder' => "Ajouter une image"
-                
-            ]])
+           ])
         ;
     }
 

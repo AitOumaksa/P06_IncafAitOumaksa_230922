@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 use App\Repository\ImageRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -16,6 +18,7 @@ class Image
 
     #[Assert\Valid()]
     #[ORM\Column(length: 255)]
+    #[Assert\Valid()]
     private ?string $pathImg = null;
 
     #[ORM\ManyToOne(inversedBy: 'images')]
@@ -31,7 +34,7 @@ class Image
         return $this->pathImg;
     }
 
-    public function setPathImg(string $pathImg): self
+    public function setPathImg(?string $pathImg): self
     {
         $this->pathImg = $pathImg;
 
