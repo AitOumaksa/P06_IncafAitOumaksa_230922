@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use Symfony\Component\Validator\Constraints as Assert;
+
 
 use App\Repository\ImageRepository;
 use Doctrine\ORM\Mapping as ORM;
