@@ -8,15 +8,20 @@
 
 {% block main %}
 	<!-- Start Trick -->
-	{% for message in app.session.flashBag.get('success') %}
+	<section>
+		<div class="mt-5">
+		{% for message in app.session.flashBag.get('success') %}
 		<div class="row justify-content-center m-3 alert alert-success" role="alert">
 			{{ message }}
 		</div>
 	{% endfor %}
-	<section>
-		<div class="mt-5">
+	{% for message in app.session.flashBag.get('danger') %}
+		<div class="row justify-content-center m-3 alert alert-danger" role="alert">
+			{{ message }}
+		</div>
+	{% endfor %}
 			<div class="row justify-content-center mt-5">
-				<div class="col-md-10 col-md-offset-1 mt-5 mb-4 p-0 mr-0 ml-0">
+				<div class="col-md-10 col-md-offset-1 mt-3 mb-3 p-0 mr-0 ml-0">
 
 					<div class="card mt-5  shadow p-3 mb-5 bg-body rounded">
 						<img class="card-img-top" src="{{ asset(trick.images.first.pathImg)}}" alt="Stalefish-main">
@@ -108,65 +113,62 @@
 	<div class="col-md-10 col-md-offset-1 shadow p-3 mb-5 bg-body rounded">
 		<div class="comments  p-3">
 			{{ form_start(form , {'attr': {'novalidate': 'novalidate'}}) }}
-			<div class="col">{{ form_row(form.content) }} 
-			<button type="submit" class="btn btn-success btn-lg ">Commenter</button>
-			{{ form_end(form) }}
-		</div>
-	</div>
-</div>
-<!-- Start comment-->
-
-<section class="">
-
-	<div class="row justify-content-center mt-5">
-		<div class="row d-flex justify-content-center mt-4 my-4">
-			<div class="col-md-10 col-md-offset-1 shadow p-3 mb-5 bg-body rounded">
-				<div class="card text-dark border border-0">
-					<div class="card-body p-4">
-						{% if comments is not empty %}
-							<h4 class="mb-4">Commentaires</h4>
-							{% for comment in comments %}
-								<div class="d-flex flex-start border-bottom border-2 mb-3">
-									<img class="rounded-circle shadow-1-strong me-3" src="{{ asset(comment.user.avatar)}}" alt="avatar de {{comment.user.userName}}" width="60" height="60"/>
-									<div>
-										<h6 class="fw-bold mb-1">{{comment.user.userName}}</h6>
-										<div class="d-flex align-items-center mb-0">
-											{% if comment.updatedAt <= comment.createdAt %}
-												<p class="mb-0">
-													<small class = "pe-3">
-														Ajouté le :
-														{{comment.createdAt|date('d/m/Y',"Europe/Paris")}}</small>
-												</p>
-											{% else %}
-												<p class="mb-0">
-													<small>
-														Mis à jour le :
-														{{comment.updatedAt|date('d/m/Y',"Europe/Paris")}}</small>
-												</p>
-											{% endif %}
-											<a href="#!" class="link-muted">
-												<i class="fas fa-trash-alt"></i>
-											</a>
-										</div>
-										<p class="mb-3">
-										<p class="mb-3">
-											{{comment.content}}
-										</p>
-									</div>
-
-								</div>
-							{% endfor %}
-						{% else %}
-							<div class="alert alert-primary" role="alert">
-								Y'a aucun commentaire dans cette trick!
-							</div>
-						{% endif %}
-					</div>
-
-				</div>
+			<div class="col">{{ form_row(form.content) }}
+				<button type="submit" class="btn btn-success btn-lg ">Commenter</button>
+				{{ form_end(form) }}
 			</div>
 		</div>
 	</div>
-</section>
+	<!-- Start comment-->
 
+	<section class="">
+
+		<div class="row justify-content-center mt-5">
+			<div class="row d-flex justify-content-center mt-4 my-4">
+				<div class="col-md-10 col-md-offset-1 shadow p-3 mb-5 bg-body rounded">
+					<div class="card text-dark border border-0">
+						<div class="card-body p-4">
+							{% if comments is not empty %}
+								<h4 class="mb-4">Commentaires</h4>
+								{% for comment in comments %}
+									<div class="d-flex flex-start border-bottom border-2 mb-3">
+										<img class="rounded-circle shadow-1-strong me-3" src="{{ asset(comment.user.avatar)}}" alt="avatar de {{comment.user.userName}}" width="60" height="60"/>
+										<div>
+											<h6 class="fw-bold mb-1">{{comment.user.userName}}</h6>
+											<div class="d-flex align-items-center mb-0">
+												{% if comment.updatedAt <= comment.createdAt %}
+													<p class="mb-0">
+														<small class="pe-3">
+															Ajouté le :
+															{{comment.createdAt|date('d/m/Y',"Europe/Paris")}}</small>
+													</p>
+												{% else %}
+													<p class="mb-0">
+														<small>
+															Mis à jour le :
+															{{comment.updatedAt|date('d/m/Y',"Europe/Paris")}}</small>
+													</p>
+												{% endif %}
+												<a href="{{ path('delete.comment', {'id': comment.id}) }}" class="link-muted" onclick="return confirm(`Êtes-vous sûr de vouloir supprimer votre commentaire ?`)">
+													<i class="fas fa-trash-alt"></i>
+												</a>
+											</div>
+											<p class="mb-3">
+												{{comment.content}}
+											</p>
+										</div>
+									</div>
+								{% endfor %}
+							{% else %}
+								<div class="alert alert-primary" role="alert">
+									Y'a aucun commentaire dans cette trick!
+								</div>
+							{% endif %}
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
 {% endblock %}
