@@ -23,13 +23,10 @@ class ImagesType extends AbstractType
                         'image/png',
                         'image/jpg',
                     ],
-                    'mimeTypesMessage' => 'Le format d\'image n\'est pas bonne',
+                    'mimeTypesMessage' => 'Le format d\'image n\'est pas bon',
                 ])
             ],
-            'attr' => [
-                'placeholder' => "Ajouter une image"
-                
-            ]])
+           ])
         ;
     }
 
