@@ -63,9 +63,9 @@
 
 							<div class="container">
 
-								<div class="row" id="trickMedia">
+								<div class="row" id="seeMedia">
 									{% for image in trick.images %}
-										<div class="col-md-3 col-sm-4 col-xs-6">
+										<div class="col-md-3 col-sm-4 col-xs-6" >
 											
 											<a href="{{ asset(image.pathImg)}}">
 												<img class="img-thumbnail rounded" src="{{ asset(image.pathImg)}}" alt="image {{ trick.name }}"/>
@@ -81,8 +81,8 @@
 									{% endfor %}
 
 								</div>
-								<div class="col text-center" id="seeMedia">
-									<button class="btn btn-info col-10 mt-3">Voir les médias</button>
+								<div class="col text-center">
+									<button class="btn btn-info col-10 mt-3" type="button" data-bs-toggle="collapse" data-bs-target="#seeMedia" aria-expanded="false" aria-controls="seeMedia">Voir les médias</button>
 								</div>
 							</div>
 
@@ -100,8 +100,13 @@
 		</div>
 	</div>
 </section>
+<<<<<<< HEAD
 
 <!--Add comment-->
+=======
+ 
+ 
+>>>>>>> 6a8be61bb6932d4b01b986a8bf5030375e5009dc
 
 <!-- Start comment-->
 
@@ -155,4 +160,6 @@
 			</div>
 		</div>
 	</div>
-</section>{% endblock %}
+</section>
+
+{% endblock %}
