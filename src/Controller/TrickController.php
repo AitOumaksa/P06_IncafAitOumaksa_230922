@@ -16,18 +16,23 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Filesystem\Filesystem;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 
 #[Route('/trick')]
 class TrickController extends AbstractController
 {
 
-    #[Route('/add', name: 'add.trick')]
-    public function addTrick(ManagerRegistry $doctrine, Request $request, EntityManagerInterface $entityManager): Response
+    #[
+        Route('/add', name: 'add.trick'),
+        IsGranted("ROLE_USER")
+    
+    ]
+    public function addTrick(ManagerRegistry $doctrine, Request $request): Response
     {
-        $id = 18;
-        $repository = $entityManager->getRepository(User::class);
-        $user = $repository->findOneBy(['id' => $id]);
+       // $id = 18;
+        //$repository = $entityManager->getRepository(User::class);
+        //$user = $repository->findOneBy(['id' => $id]);
         $manager = $doctrine->getManager();
         $trick = new Trick();
         $form = $this->createForm(TrickType::class, $trick);
@@ -42,7 +47,7 @@ class TrickController extends AbstractController
                 $image->setPathImg($path . $fichier);
             }
             $trick->setSlug($trick->getName());
-            $trick->setUser($user);
+            $trick->setUser($this->getUser());
             $manager->persist($trick);
             $manager->flush();
 
@@ -68,7 +73,7 @@ class TrickController extends AbstractController
 
         $user = $repository->findOneBy(['id' => $id]);
 
-        $comments = $commentRepository->findBy(['trick' =>$trick->getId()], ['createdAt' => 'DESC']);
+        $comments = $commentRepository->findBy(['trick' =>$trick->getId()], ['updatedAt' => 'DESC']);
 
         $comment = new Comment();
 
@@ -105,10 +110,15 @@ class TrickController extends AbstractController
     }
 
 
-    #[Route('/edit/{slug}', name: 'edit.trick')]
+    #[
+        Route('/edit/{slug}', name: 'edit.trick'),
+        IsGranted("ROLE_USER")
+    ]
     public function editTrick(Request $request, TrickRepository $repo, ManagerRegistry $doctrine, $slug,  Filesystem $filesystem)
     {
         $trick = $repo->findOneBySlug($slug);
+
+        $this->denyAccessUnlessGranted('ROLE_USER');
 
         $form = $this->createForm(TrickType::class, $trick);
 
@@ -117,13 +127,6 @@ class TrickController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-           // foreach ($trick->getImages() as $oldImage)
-             //   $oldImageFile = $oldImage->getPathImg();
-            //if ($oldImageFile) {
-               // $filesystem->remove($oldImageFile);
-            //}
-            
             foreach ($form->get('images') as $imageForm) {
                 $imageFile = $imageForm->get('imageFile')->getData();
                 if($imageFile){ 
@@ -161,6 +164,8 @@ class TrickController extends AbstractController
     {
         $trick = $repo->findOneBySlug($slug);
 
+        $this->denyAccessUnlessGranted('ROLE_USER', null, 'Vous devez être connecté pour acceder à cette page !');
+        
         $manager = $doctrine->getManager();
 
         $fileSystem = new Filesystem();
@@ -173,7 +178,7 @@ class TrickController extends AbstractController
         $manager->flush();
 
         $this->addflash(
-            'success',
+            'danger',
             "Le trick <" . $trick->getName() . "> a été supprimé avec succès !"
         );
 
