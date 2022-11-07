@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Comment;
 use App\Entity\Trick;
-use App\Entity\User;
 use App\Form\CommentType;
 use App\Form\TrickType;
 use App\Repository\CommentRepository;
@@ -12,27 +11,18 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\TrickRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Filesystem\Filesystem;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-
 
 #[Route('/trick')]
 class TrickController extends AbstractController
 {
 
-    #[
-        Route('/add', name: 'add.trick'),
-        IsGranted("ROLE_USER")
-    
-    ]
+    #[Route('/add', name: 'add.trick')]
     public function addTrick(ManagerRegistry $doctrine, Request $request): Response
     {
-       // $id = 18;
-        //$repository = $entityManager->getRepository(User::class);
-        //$user = $repository->findOneBy(['id' => $id]);
+        $this->denyAccessUnlessGranted('ROLE_USER', null, 'Vous devez être connecté pour acceder à cette page !');
         $manager = $doctrine->getManager();
         $trick = new Trick();
         $form = $this->createForm(TrickType::class, $trick);
@@ -63,17 +53,10 @@ class TrickController extends AbstractController
     }
 
     #[Route('/{slug}', name: 'trick.details')]
-    public function getTrick(TrickRepository $repo, Request $request, $slug, CommentRepository $commentRepository, ManagerRegistry $doctrine, EntityManagerInterface $entityManager): Response
+    public function getTrick(Request $request, CommentRepository $commentRepository, ManagerRegistry $doctrine, Trick $trick): Response
     {
-        $trick = $repo->findOneBySlug($slug);
 
-        $id = 18;
-
-        $repository = $entityManager->getRepository(User::class);
-
-        $user = $repository->findOneBy(['id' => $id]);
-
-        $comments = $commentRepository->findBy(['trick' =>$trick->getId()], ['updatedAt' => 'DESC']);
+        $comments = $commentRepository->findBy(['trick' => $trick->getId()], ['updatedAt' => 'DESC']);
 
         $comment = new Comment();
 
@@ -87,7 +70,7 @@ class TrickController extends AbstractController
             $comment->setCreatedAt(new \DateTimeImmutable());
             $comment->setUpdatedAt(new \DateTimeImmutable());
             $comment->setTrick($trick);
-            $comment->setUser($user);
+            $comment->setUser($this->getUser());
 
             $manager->persist($comment);
             $manager->flush();
@@ -110,15 +93,11 @@ class TrickController extends AbstractController
     }
 
 
-    #[
-        Route('/edit/{slug}', name: 'edit.trick'),
-        IsGranted("ROLE_USER")
-    ]
-    public function editTrick(Request $request, TrickRepository $repo, ManagerRegistry $doctrine, $slug,  Filesystem $filesystem)
+    #[Route('/edit/{slug}', name: 'edit.trick')]
+    public function editTrick(Request $request, ManagerRegistry $doctrine, Trick $trick)
     {
-        $trick = $repo->findOneBySlug($slug);
 
-        $this->denyAccessUnlessGranted('ROLE_USER');
+        $this->denyAccessUnlessGranted('ROLE_USER', null, 'Vous devez être connecté pour acceder à cette page !');
 
         $form = $this->createForm(TrickType::class, $trick);
 
@@ -129,12 +108,12 @@ class TrickController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             foreach ($form->get('images') as $imageForm) {
                 $imageFile = $imageForm->get('imageFile')->getData();
-                if($imageFile){ 
-                $path = 'assets/figures/img/tricks/images_directory/';
-                $fichier = md5(uniqid()) . '.' . $imageFile->guessExtension();
-                $imageFile->move($this->getParameter('images_directory'), $fichier);
-                $image = $imageForm->getData();
-                $image->setPathImg($path . $fichier);
+                if ($imageFile) {
+                    $path = 'assets/figures/img/tricks/images_directory/';
+                    $fichier = md5(uniqid()) . '.' . $imageFile->guessExtension();
+                    $imageFile->move($this->getParameter('images_directory'), $fichier);
+                    $image = $imageForm->getData();
+                    $image->setPathImg($path . $fichier);
                 }
             }
             $trick->setUpdatedAt(new \DateTimeImmutable());
@@ -165,7 +144,7 @@ class TrickController extends AbstractController
         $trick = $repo->findOneBySlug($slug);
 
         $this->denyAccessUnlessGranted('ROLE_USER', null, 'Vous devez être connecté pour acceder à cette page !');
-        
+
         $manager = $doctrine->getManager();
 
         $fileSystem = new Filesystem();

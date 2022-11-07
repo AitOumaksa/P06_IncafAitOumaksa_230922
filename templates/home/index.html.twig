@@ -60,7 +60,7 @@
 										</a>
 									</h5>
 									<div>
-										{% if app.user %}
+										{%  if (app.user) and ((app.user.id == trick.user.id) or (is_granted('ROLE_ADMIN'))) %}
 											<a href="{{ path('delete.trick', {'slug': trick.slug}) }}" onclick="return confirm(`Êtes-vous sûr de vouloir supprimer le trick : {{trick.name}} ?`)">
 												<i class="fas fa-trash-alt"></i>
 											</a>
@@ -73,17 +73,25 @@
 								<div class="card-footer pr-3 pl-3">
 									<p class="mb-0 text-muted">
 										{% if trick.updatedAt <= trick.createdAt %}
-											<img src="{{ asset(trick.user.avatar) }}" class="rounded-circle avatar" alt="Avatar"/>
-											Crée par
+											{% if trick.user.avatar %}
+												<img src="{{ asset(trick.user.avatar) }}" class="rounded-circle avatar" alt="Avatar {{ trick.user.userName }}"/>
+											{% else %}
+												<img src="https://forum.pcastuces.com/img/efa5cf51c0711fafc61e73f90e05bc12.png" class="rounded-circle avatar" alt="Avatar {{ trick.user.userName }}"/>
+											{% endif %}
+											Crée par le
 											<a href="#" class="text-info text-decoration-none">
 												{{ trick.user.userName }}
 											</a>
 											<span class="responsive-date-trick">
 												{{ trick.createdAt|date('d/m/Y', 'Europe/Paris') }}
 											</span>
-										{% else %}
-											<img src="{{ asset(trick.user.avatar) }}" class="rounded-circle avatar" alt="Avatar"/>
-											Mis à jour par
+										    {% else %}
+											{% if trick.user.avatar %}
+												<img src="{{ asset(trick.user.avatar) }}" class="rounded-circle avatar" alt="Avatar {{ trick.user.userName }}"/>
+											{% else %}
+												<img src="https://forum.pcastuces.com/img/efa5cf51c0711fafc61e73f90e05bc12.png" class="rounded-circle avatar" alt="Avatar {{ trick.user.userName }}"/>
+											{% endif %}
+											Mis à jour par le
 											<a href="#" class="text-info text-decoration-none">
 												{{ trick.user.userName }}
 											</a>

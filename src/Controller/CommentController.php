@@ -2,9 +2,8 @@
 
 namespace App\Controller;
 
-
+use App\Entity\Comment;
 use App\Form\CommentType;
-use App\Repository\CommentRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,13 +14,13 @@ use Symfony\Component\Routing\Annotation\Route;
 class CommentController extends AbstractController
 {
 
-    
-    #[Route("/edit/comment/{id}/", name : "edit.comment")]
-   
-    public function edit(CommentRepository $repo, Request $request , $id ,ManagerRegistry $doctrine)
+
+    #[Route("/edit/comment/{id}/", name: "edit.comment")]
+
+    public function editComment(Comment $comment, Request $request, ManagerRegistry $doctrine)
     {
-       
-        $comment = $repo->findOneBy(['id' => $id]);
+
+        $this->denyAccessUnlessGranted('ROLE_USER', null, 'Vous devez être connecté pour acceder à cette page !');
 
         $manager = $doctrine->getManager();
 
@@ -49,13 +48,13 @@ class CommentController extends AbstractController
     }
 
     #[Route('/delete/comment/{id}', name: 'delete.comment')]
-    public function deleteComment(CommentRepository $repo, ManagerRegistry $doctrine, $id)
-    {  
+    public function deleteComment(Comment $comment, ManagerRegistry $doctrine)
+    {
 
-        $comment = $repo->findOneBy(['id' => $id]);
+        $this->denyAccessUnlessGranted('ROLE_USER', null, 'Vous devez être connecté pour acceder à cette page !');
 
         $manager = $doctrine->getManager();
-        
+
         $manager->remove($comment);
 
         $manager->flush();

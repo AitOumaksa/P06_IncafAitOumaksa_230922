@@ -49,17 +49,21 @@
 									{{ trick.category }}
 								</li>
 								|
-								<li class="list-inline-item">
-									<a href="{{ path( 'edit.trick', { slug: trick.slug } ) }}">
-										<i class="fas fa-pencil-alt"></i>
-									</a>
-								</li>
-								|
-								<li class="list-inline-item">
-									<a href="{{ path('delete.trick', {'slug': trick.slug}) }}" onclick="return confirm(`Êtes-vous sûr de vouloir supprimer le trick : {{trick.name}} ?`)">
-										<i class="fas fa-trash-alt"></i>
-									</a>
-								</li>
+								{%  if (app.user) and (app.user.id == trick.user.id) %}
+									<li class="list-inline-item">
+										<a href="{{ path( 'edit.trick', { slug: trick.slug } ) }}">
+											<i class="fas fa-pencil-alt"></i>
+										</a>
+									</li>
+									|
+								{% endif %}
+								{%  if (app.user) and ((app.user.id == trick.user.id) or (is_granted('ROLE_ADMIN'))) %}
+									<li class="list-inline-item">
+										<a href="{{ path('delete.trick', {'slug': trick.slug}) }}" onclick="return confirm(`Êtes-vous sûr de vouloir supprimer le trick : {{trick.name}} ?`)">
+											<i class="fas fa-trash-alt"></i>
+										</a>
+									</li>
+								{% endif %}
 							</ul>
 							<hr>
 							<h4 class="card-title text-center">
@@ -109,32 +113,32 @@
 </section>
 
 {% if app.user  %}
-<!--Add comment-->
-<div class="row justify-content-center mt-5">
-	<div class="col-md-10 col-md-offset-1 shadow p-3 mb-5 bg-body rounded">
-		<div class="comments  p-3">
-			{{ form_start(form , {'attr': {'novalidate': 'novalidate'}}) }}
-			<div class="col">
-				{{ form_row(form.content) }}
-				<button type="submit" class="btn btn-success btn-lg ">Commenter !</button>
-				{{ form_end(form) }}
+	<!--Add comment-->
+	<div class="row justify-content-center mt-5">
+		<div class="col-md-10 col-md-offset-1 shadow p-3 mb-5 bg-body rounded">
+			<div class="comments  p-3">
+				{{ form_start(form , {'attr': {'novalidate': 'novalidate'}}) }}
+				<div class="col">
+					{{ form_row(form.content) }}
+					<button type="submit" class="btn btn-success btn-lg ">Commenter !</button>
+					{{ form_end(form) }}
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
 {% else %}
-<!--vérifie auth befor display input comment-->
-<div class="row justify-content-center mt-5">
-	<div class="col-md-10 col-md-offset-1 shadow p-3 mb-5 bg-body rounded">
-		<div class="comments text-center p-3">
-			<p>
-				<a href="#">Inscrivez-vous</a>
-				ou
-				<a href="/login">connectez vous</a>
-				pour commenter cet article !</p>
+	<!--vérifie auth befor display input comment-->
+	<div class="row justify-content-center mt-5">
+		<div class="col-md-10 col-md-offset-1 shadow p-3 mb-5 bg-body rounded">
+			<div class="comments text-center">
+				<p>
+					<a href="#">Inscrivez-vous</a>
+					ou
+					<a href="/login">connectez vous</a>
+					pour commenter cet article !</p>
+			</div>
 		</div>
 	</div>
-</div>
 {% endif %}
 <!-- Start comment-->
 
@@ -149,7 +153,11 @@
 							<h4 class="mb-4">Commentaires</h4>
 							{% for comment in comments %}
 								<div class="d-flex flex-start border-bottom border-2 mb-3">
-									<img class="rounded-circle shadow-1-strong me-3" src="{{ asset(comment.user.avatar)}}" alt="avatar de {{comment.user.userName}}" width="60" height="60"/>
+									{% if comment.user.avatar %}
+										<img class="rounded-circle shadow-1-strong me-3" src="{{ asset(comment.user.avatar)}}" alt="avatar de {{comment.user.userName}}" width="60" height="60"/>
+									{% else %}
+										<img class="rounded-circle shadow-1-strong me-3" src="https://forum.pcastuces.com/img/efa5cf51c0711fafc61e73f90e05bc12.png" alt="avatar de {{comment.user.userName}}" width="60" height="60"/>
+									{% endif %}
 									<div>
 										<h6 class="fw-bold mb-1">{{comment.user.userName}}</h6>
 										<div class="d-flex align-items-center mb-0">
@@ -161,17 +169,21 @@
 												</p>
 											{% else %}
 												<p class="mb-0">
-													<small>
+													<small class="pe-3">
 														Mis à jour le :
 														{{comment.updatedAt|date('d/m/Y',"Europe/Paris")}}</small>
 												</p>
 											{% endif %}
-											<a href="{{ path('delete.comment', {'id': comment.id}) }}" class="link-muted pe-2" onclick="return confirm(`Êtes-vous sûr de vouloir supprimer votre commentaire ?`)">
-												<i class="fas fa-trash-alt"></i>
-											</a>
-											<a href="{{ path('edit.comment', {'id': comment.id}) }}" class="link-muted">
-												<i class="fas fa-pencil-alt"></i>
-											</a>
+											{%  if (app.user) and ((app.user.id == comment.user.id)) %}
+												<a href="{{ path('edit.comment', {'id': comment.id}) }}" class="link-muted pe-2">
+													<i class="fas fa-pencil-alt"></i>
+												</a>
+											{% endif %}
+											{%  if (app.user) and ((app.user.id == comment.user.id) or (is_granted('ROLE_ADMIN'))) %}
+												<a href="{{ path('delete.comment', {'id': comment.id}) }}" class="link-muted pe-2" onclick="return confirm(`Êtes-vous sûr de vouloir supprimer votre commentaire ?`)">
+													<i class="fas fa-trash-alt"></i>
+												</a>
+											{% endif %}
 										</div>
 										<p class="mb-3">
 											{{comment.content}}
