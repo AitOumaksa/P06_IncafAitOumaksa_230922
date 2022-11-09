@@ -10,7 +10,6 @@ use App\Repository\CommentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Repository\TrickRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Filesystem\Filesystem;
@@ -22,7 +21,7 @@ class TrickController extends AbstractController
     #[Route('/add', name: 'add.trick')]
     public function addTrick(ManagerRegistry $doctrine, Request $request): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_USER', null, 'Vous devez être connecté pour acceder à cette page !');
+        $this->denyAccessUnlessGranted('ROLE_USER');
         $manager = $doctrine->getManager();
         $trick = new Trick();
         $form = $this->createForm(TrickType::class, $trick);
@@ -97,7 +96,7 @@ class TrickController extends AbstractController
     public function editTrick(Request $request, ManagerRegistry $doctrine, Trick $trick)
     {
 
-        $this->denyAccessUnlessGranted('ROLE_USER', null, 'Vous devez être connecté pour acceder à cette page !');
+        $this->denyAccessUnlessGranted('edit_comment', $trick);
 
         $form = $this->createForm(TrickType::class, $trick);
 
@@ -139,11 +138,9 @@ class TrickController extends AbstractController
     }
 
     #[Route('/delete/{slug}', name: 'delete.trick')]
-    public function deleteTrick(TrickRepository $repo, ManagerRegistry $doctrine, $slug)
+    public function deleteTrick(Trick $trick, ManagerRegistry $doctrine, $slug)
     {
-        $trick = $repo->findOneBySlug($slug);
-
-        $this->denyAccessUnlessGranted('ROLE_USER', null, 'Vous devez être connecté pour acceder à cette page !');
+        $this->denyAccessUnlessGranted('delete_trick', $trick);
 
         $manager = $doctrine->getManager();
 

@@ -20,7 +20,7 @@ class CommentController extends AbstractController
     public function editComment(Comment $comment, Request $request, ManagerRegistry $doctrine)
     {
 
-        $this->denyAccessUnlessGranted('ROLE_USER', null, 'Vous devez être connecté pour acceder à cette page !');
+        $this->denyAccessUnlessGranted('edit_comment', $comment);
 
         $manager = $doctrine->getManager();
 
@@ -51,7 +51,7 @@ class CommentController extends AbstractController
     public function deleteComment(Comment $comment, ManagerRegistry $doctrine)
     {
 
-        $this->denyAccessUnlessGranted('ROLE_USER', null, 'Vous devez être connecté pour acceder à cette page !');
+        $this->denyAccessUnlessGranted('delete_comment', $comment);
 
         $manager = $doctrine->getManager();
 

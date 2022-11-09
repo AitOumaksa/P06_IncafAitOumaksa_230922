@@ -49,7 +49,7 @@
 									{{ trick.category }}
 								</li>
 								|
-								{%  if (app.user) and (app.user.id == trick.user.id) %}
+								{%  if (is_granted("edit_trick" , trick)) %}
 									<li class="list-inline-item">
 										<a href="{{ path( 'edit.trick', { slug: trick.slug } ) }}">
 											<i class="fas fa-pencil-alt"></i>
@@ -57,7 +57,7 @@
 									</li>
 									|
 								{% endif %}
-								{%  if (app.user) and ((app.user.id == trick.user.id) or (is_granted('ROLE_ADMIN'))) %}
+								{%  if (is_granted("delete_trick" , trick)) %}
 									<li class="list-inline-item">
 										<a href="{{ path('delete.trick', {'slug': trick.slug}) }}" onclick="return confirm(`Êtes-vous sûr de vouloir supprimer le trick : {{trick.name}} ?`)">
 											<i class="fas fa-trash-alt"></i>
@@ -174,12 +174,12 @@
 														{{comment.updatedAt|date('d/m/Y',"Europe/Paris")}}</small>
 												</p>
 											{% endif %}
-											{%  if (app.user) and ((app.user.id == comment.user.id)) %}
+											{%  if (is_granted("edit_comment" , comment)) %}
 												<a href="{{ path('edit.comment', {'id': comment.id}) }}" class="link-muted pe-2">
 													<i class="fas fa-pencil-alt"></i>
 												</a>
 											{% endif %}
-											{%  if (app.user) and ((app.user.id == comment.user.id) or (is_granted('ROLE_ADMIN'))) %}
+											{%  if (is_granted("delete_comment" , comment)) %}
 												<a href="{{ path('delete.comment', {'id': comment.id}) }}" class="link-muted pe-2" onclick="return confirm(`Êtes-vous sûr de vouloir supprimer votre commentaire ?`)">
 													<i class="fas fa-trash-alt"></i>
 												</a>

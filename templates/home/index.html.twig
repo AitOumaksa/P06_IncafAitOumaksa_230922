@@ -60,7 +60,7 @@
 										</a>
 									</h5>
 									<div>
-										{%  if (app.user) and ((app.user.id == trick.user.id) or (is_granted('ROLE_ADMIN'))) %}
+										{%  if (is_granted("delete_trick" , trick)) %}
 											<a href="{{ path('delete.trick', {'slug': trick.slug}) }}" onclick="return confirm(`Êtes-vous sûr de vouloir supprimer le trick : {{trick.name}} ?`)">
 												<i class="fas fa-trash-alt"></i>
 											</a>
@@ -85,7 +85,7 @@
 											<span class="responsive-date-trick">
 												{{ trick.createdAt|date('d/m/Y', 'Europe/Paris') }}
 											</span>
-										    {% else %}
+										{% else %}
 											{% if trick.user.avatar %}
 												<img src="{{ asset(trick.user.avatar) }}" class="rounded-circle avatar" alt="Avatar {{ trick.user.userName }}"/>
 											{% else %}
