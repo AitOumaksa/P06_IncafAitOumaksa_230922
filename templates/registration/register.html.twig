@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SnowTricks - Inscription
+{% endblock %}
+
+{% block main %}
+	<div class="container d-flex justify-content-center">
+		<div class="row  col-md-10 col-md-offset-1 mt-5 mb-4 shadow p-3 mb-5 bg-body rounded ">
+			<h1>Inscription :</h1>
+			{{ form_start(registrationForm) }}
+            <div class="position-relative">
+			<img src="https://mdbcdn.b-cdn.net/img/new/avatars/5.webp" class="rounded-3" style="width: 150px;" alt="Avatar"/>
+			<div class ="position-absolute bottom-0 start-0"><i class="fas icon_position fa-times fa-2x btn btn-dark btn-sm me-2 mt-2"></i></div>
+            </div>
+			<div hidden>
+				{#{{ form_row(registrationForm.avatar) }}#}
+			</div>
+			{{ form_row(registrationForm.userName) }}
+			{{ form_row(registrationForm.email) }}
+			{{ form_row(registrationForm.plainPassword, {
+            label: 'Mot de passe'
+        }) }}
+			{#{{ form_row(registrationForm.agreeTerms) }}#}
+
+			<button type="submit" class="btn btn-lg btn-info btn-md text-light mt-2">Inscrivez - vous</button>
+			{{ form_end(registrationForm) }}
+
+		</div>
+	</div>
+{% endblock %}

@@ -15,10 +15,10 @@
             You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
         </div>
     {% endif %}
-    <h1 class="h3 mb-3 font-weight-normal">Connectez - Vous : </h1>
-    <label for="inputEmail mb-1">Email</label>
+    <h1 class="h3 mb-3 font-weight-normal"> Connectez - Vous : </h1>
+    <label for="inputEmail mb-1">E-mail</label>
     <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
-    <label for="inputPassword mb-1">Password</label>
+    <label for="inputPassword mb-1">Mot de passe</label>
     <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
 
     <input type="hidden" name="_csrf_token"
@@ -37,7 +37,7 @@
     #}
 
     <button class="btn btn-lg btn-info btn-md text-light mt-2" type="submit">
-        Sign in
+        Connectez - vous
     </button>
 </form>
 </div>
