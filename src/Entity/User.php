@@ -13,6 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'Adresse E-mail existe déja')]
+#[UniqueEntity(fields: ['userName'], message: "Nom d'utilisateur existe déja")]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -43,7 +44,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         pattern : '/^[A-Za-z0-9_]+$/',
         message : " Votre nom d'utilisateur ne dois pas contenir des espaces et caractère spéciaux excepté '_' "
     )]
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 50 , unique: true)]
     private ?string $userName = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -97,7 +98,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
+        return (string) $this->userName;
     }
 
     /**
