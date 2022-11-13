@@ -11,8 +11,8 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Regex;
 
 class RegistrationFormType extends AbstractType
 {
@@ -20,13 +20,20 @@ class RegistrationFormType extends AbstractType
     {
         $builder
             ->add('userName' , TextType::class, [
-                'label' => "Nom d'utilisateur"
+                'label' => "Nom d'utilisateur",
+                'attr' => [
+                    'placeholder' => "Votre Nom d'utilisateur"
+                ],
             ])
             ->add('email' , EmailType::class, [
-                'label' => 'E-mail'
+                'label' => 'E-mail',
+                'attr' => [
+                    'placeholder' => "Votre adresse E-mail"
+                ],
             ])
-           /* ->add('avatar' ,  FileType::class, ['label' => 'Images utilisateur',
+            ->add('avatar' ,  FileType::class, ['label' => "Photo d'utilisateur",
             'mapped' => false,
+            'attr' => ['class' => 'd-none'],
             'constraints' => [
                 new File([
                     'mimeTypes' => [
@@ -34,24 +41,28 @@ class RegistrationFormType extends AbstractType
                         'image/png',
                         'image/jpg',
                     ],
-                    'mimeTypesMessage' => 'Le format d\'image n\'est pas bon',
+                    'mimeTypesMessage' => 'Veuillez insérer une image en .jpg, .jpeg ou .png !',
+                ]),
+                new NotBlank([
+                    'message' => 'Vous devez ajouter une photo ',
                 ])
             ],
-           ])*/
+           ])
             ->add('plainPassword', PasswordType::class, [
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
                 'mapped' => false,
-                'attr' => ['autocomplete' => 'new-password'],
+                'attr' => [
+                    'autocomplete' => 'new-password',
+                    'placeholder' => "Votre mot de passe"
+                ],
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'vous devez entrez un mot de passe',
+                        'message' => 'Vous devez entrez un mot de passe',
                     ]),
-                    new Length([
-                        'min' => 6,
-                        'minMessage' => 'Your password should be at least {{ limit }} characters',
-                        // max length allowed by Symfony for security reasons
-                        'max' => 4096,
+                    new Regex([
+                        'pattern' => '/^((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{8,64})+$/',
+                        'message' => 'Mot de passe doit contenir 8 caractères dont au minimum une majuscule, une minuscule, un caractère numérique et un caractère spécial'
                     ]),
                 ],
             ])

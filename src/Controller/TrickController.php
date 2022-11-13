@@ -20,13 +20,15 @@ class TrickController extends AbstractController
 
     #[Route('/add', name: 'add.trick')]
     public function addTrick(ManagerRegistry $doctrine, Request $request): Response
-    {
+    { 
         $this->denyAccessUnlessGranted('ROLE_USER');
         $manager = $doctrine->getManager();
         $trick = new Trick();
         $form = $this->createForm(TrickType::class, $trick);
         $form->handleRequest($request);
+        
         if ($form->isSubmitted() && $form->isValid()) {
+            
             foreach ($form->get('images') as $imageForm) {
                 $imageFile = $imageForm->get('imageFile')->getData();
                 $path = 'assets/figures/img/tricks/images_directory/';
@@ -43,12 +45,12 @@ class TrickController extends AbstractController
             $this->addFlash('success', 'la Figure <' . $trick->getName() . '> est ajouter avec succée');
 
             return $this->redirectToRoute('home');
-        } else {
-
+        } 
+            
             return $this->render('trick/add-trick.html.twig', [
                 'form' => $form->createView()
             ]);
-        }
+        
     }
 
     #[Route('/{slug}', name: 'trick.details')]
@@ -96,7 +98,7 @@ class TrickController extends AbstractController
     public function editTrick(Request $request, ManagerRegistry $doctrine, Trick $trick)
     {
 
-        $this->denyAccessUnlessGranted('edit_comment', $trick);
+        $this->denyAccessUnlessGranted('edit_trick', $trick);
 
         $form = $this->createForm(TrickType::class, $trick);
 

@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class ImagesType extends AbstractType
 {
@@ -23,7 +24,10 @@ class ImagesType extends AbstractType
                         'image/png',
                         'image/jpg',
                     ],
-                    'mimeTypesMessage' => 'Le format d\'image n\'est pas bon',
+                    'mimeTypesMessage' => 'Veuillez insérer une image en .jpg, .jpeg ou .png !',
+                ]),
+                new NotBlank([
+                    'message' => 'Vous devez ajouter une image ',
                 ])
             ],
            ])

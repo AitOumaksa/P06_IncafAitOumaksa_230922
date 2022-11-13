@@ -15,10 +15,8 @@ class Image
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
-
-    #[Assert\Valid()]
+    
     #[ORM\Column(length: 255)]
-    #[Assert\Valid()]
     private ?string $pathImg = null;
 
     #[ORM\ManyToOne(inversedBy: 'images')]

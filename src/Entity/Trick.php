@@ -45,9 +45,11 @@ class Trick
 
     #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Comment::class,  orphanRemoval: true)]
     private Collection $commments;
+
+    #[Assert\Valid()]
     #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Image::class, cascade: ["persist" , "remove"])]
     private Collection $images;
-
+     
     #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Video::class,  cascade: ['persist', "remove"])]
     private Collection $videos;
 
@@ -216,12 +218,12 @@ class Trick
      * @return Collection<int, Video>
      */
     public function getVideos(): Collection
-    {
+    { 
         return $this->videos;
     }
 
     public function addVideo(Video $video): self
-    {
+    { 
         if (!$this->videos->contains($video)) {
             $this->videos->add($video);
             $video->setTrick($this);

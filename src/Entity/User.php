@@ -9,9 +9,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+#[UniqueEntity(fields: ['email'], message: 'Adresse E-mail existe déja')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -19,6 +20,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Assert\NotBlank(message: "Vous devez entrez un E-mail")]
+    #[Assert\Regex(
+        pattern : '/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+\.[a-zA-Z]+$/',
+        message : "Veuillez renseigner un email valide. Exemple : 'exemple@exemple.exemple'"
+    )]
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
@@ -31,6 +37,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
+    #[Assert\NotBlank(message: "Vous devez entrez un nom d'utilisateur")]
+    #[Assert\Length(min: 5, minMessage: "Veuillez avoir au moins 5 caractères", max: 50, maxMessage: "Le nom ne doit pas faire plus de 30 caractères")]
+    #[Assert\Regex(
+        pattern : '/^[A-Za-z0-9_]+$/',
+        message : " Votre nom d'utilisateur ne dois pas contenir des espaces et caractère spéciaux excepté '_' "
+    )]
     #[ORM\Column(length: 50)]
     private ?string $userName = null;
 

@@ -6,25 +6,58 @@
 {% block main %}
 	<div class="container d-flex justify-content-center">
 		<div class="row  col-md-10 col-md-offset-1 mt-5 mb-4 shadow p-3 mb-5 bg-body rounded ">
+			{% for message in app.session.flashBag.get('warning') %}
+					<div class="alert alert-warning" role="alert">
+						{{ message }}
+					</div>
+			{% endfor %}
 			<h1>Inscription :</h1>
-			{{ form_start(registrationForm) }}
-            <div class="position-relative">
-			<img src="https://mdbcdn.b-cdn.net/img/new/avatars/5.webp" class="rounded-3" style="width: 150px;" alt="Avatar"/>
-			<div class ="position-absolute bottom-0 start-0"><i class="fas icon_position fa-times fa-2x btn btn-dark btn-sm me-2 mt-2"></i></div>
-            </div>
-			<div hidden>
-				{#{{ form_row(registrationForm.avatar) }}#}
+			{{ form_start(registrationForm , {'attr': {'novalidate': 'novalidate'}}) }}
+			<div class="avatar-container">
+				<div class="position-relative avatar-container">
+				<img src="https://www.screenfeed.fr/wp-content/uploads/2013/10/default-avatar.png" class="rounded-3" style="width: 150px;" alt="Avatar"/>
+				<div class ="position-absolute bottom-0 start-0"> <button class="btn btn-info btn-sm" id="load_image_avatar"><i class="fas fas-light fa-camera-retro text-light"></i></button></div>
+				</div>
+				{{ form_row(registrationForm.avatar) }}
 			</div>
+			
+		
 			{{ form_row(registrationForm.userName) }}
 			{{ form_row(registrationForm.email) }}
 			{{ form_row(registrationForm.plainPassword, {
             label: 'Mot de passe'
         }) }}
-			{#{{ form_row(registrationForm.agreeTerms) }}#}
 
 			<button type="submit" class="btn btn-lg btn-info btn-md text-light mt-2">Inscrivez - vous</button>
+			{{ form_rest(registrationForm) }}
 			{{ form_end(registrationForm) }}
 
 		</div>
 	</div>
+
+	<script>
+
+
+
+const loadImageFile = (e) => {
+
+var itemView = e.target.closest('.avatar-container').querySelector('img');
+
+itemView.src = URL.createObjectURL(e.target.files[0]);
+
+};
+
+
+
+// show img at refresh/load
+document.getElementById('registration_form_avatar').addEventListener("change", loadImageFile)
+
+
+// show iframeat refresh/load
+document.getElementById('load_image_avatar').addEventListener('click', (e) => {
+e.preventDefault();
+// remove the li for the tag form
+document.getElementById('registration_form_avatar').click();
+});
+</script>
 {% endblock %}

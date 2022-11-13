@@ -18,7 +18,7 @@ use App\Service\SendMailService;
 
 class RegistrationController extends AbstractController
 {
-    #[Route('/registeration', name: 'register')]
+    #[Route('/registration', name: 'register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, LoginAuthenticator $authenticator, EntityManagerInterface $entityManager, SendMailService $mail, JWTService $jwt): Response
     {
         $user = new User();
@@ -26,7 +26,11 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
+            $avatarFile = $form->get('avatar')->getData();
+            $path = 'assets/img/userAvatar/';
+            $fichier = md5(uniqid()) . '.' . $avatarFile->guessExtension();
+            $avatarFile->move($this->getParameter('users_directory'), $fichier);
+            $user->setAvatar($path . $fichier);
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
                     $user,
@@ -36,34 +40,27 @@ class RegistrationController extends AbstractController
 
             $entityManager->persist($user);
             $entityManager->flush();
-            // do anything else you need here, like send an email
 
-                  // On génère le JWT de l'utilisateur
-            // On crée le Header
             $header = [
                 'typ' => 'JWT',
                 'alg' => 'HS256'
             ];
 
-            // On crée le Payload
             $payload = [
                 'user_id' => $user->getId()
             ];
 
-            // On génère le token
             $token = $jwt->generate($header, $payload, $this->getParameter('app.jwtsecret'));
-
-             // On envoie un mail
              $mail->sendEmail(
                 'no-reply@monsite.net',
                 $user->getEmail(),
-                'Activation de votre compte sur le site e-commerce',
+                'Activation de votre compte sur le site snowTricks',
                 'register',
                 compact('user', 'token')
             );
             
             $this->addFlash('warning', 'Vous devez activer votre compte via le lien envoyé dans votre boite E-mail');
-            return $this->redirectToRoute('home');
+            return $this->redirectToRoute('register');
 
             
         }
@@ -76,15 +73,12 @@ class RegistrationController extends AbstractController
     #[Route('/verif/{token}', name: 'verify_user')]
     public function verifyUser($token, JWTService $jwt, UserRepository $usersRepository, EntityManagerInterface $em): Response
     {
-        //On vérifie si le token est valide, n'a pas expiré et n'a pas été modifié
-        if($jwt->isValid($token) && !$jwt->isExpired($token) && $jwt->check($token, $this->getParameter('app.jwtsecret'))){
-            // On récupère le payload
+        if($jwt->isValid($token) && !$jwt->isExpired($token) && $jwt->check($token, $this->getParameter('app.jwtsecret')))
+        {
             $payload = $jwt->getPayload($token);
 
-            // On récupère le user du token
             $user = $usersRepository->find($payload['user_id']);
 
-            //On vérifie que l'utilisateur existe et n'a pas encore activé son compte
             if($user && !$user->isVerified()){
                 $user->setIsVerified(true);
                 $em->flush($user);
@@ -92,8 +86,8 @@ class RegistrationController extends AbstractController
                 return $this->redirectToRoute('home');
             }
         }
-        // Ici un problème se pose dans le token
-        $this->addFlash('danger', 'Le token est invalide ou a expiré');
-        return $this->redirectToRoute('app_login');
+
+        $this->addFlash('danger', 'Le token est invalide');
+        return $this->redirectToRoute('login');
     }
 }
