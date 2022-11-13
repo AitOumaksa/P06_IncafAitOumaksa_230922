@@ -5,7 +5,6 @@ use DateTimeImmutable;
 
 class JWTService
 {
-    // On génère le token
 
     /**
      * Génération du JWT
