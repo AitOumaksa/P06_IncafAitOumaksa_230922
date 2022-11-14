@@ -110,8 +110,71 @@
 						</div>
 					{% endfor %}
 				</div>
+				<div class="row">
+					<div class="col-12 text-center">
+						<button id="loadMoreTricks" class="btn btn-primary">Voir plus de tricks</button>
+					</div>
+				</div>
 			</div>
 		</div>
 		<!-- end Card of Tricks -->
 	</div>
+{% endblock %}
+{% block javascripts %}
+	<script>
+
+	click = 0;
+	numberElementMin = document.getElementById("trick-container").childElementCount;
+
+	function createElementFromHTML(htmlString) {
+		var div = document.createElement('div');
+		div.innerHTML = htmlString.trim();
+
+		// Change this to div.childNodes to support multiple top-level nodes.
+		return div
+		}
+
+    
+	function loadMoreTricks(url) {
+
+        response = fetch(url, {method: 'GET'})
+		
+		.then(function (res) {
+
+		if (res.ok) {
+
+		return res.text();
+		}
+		})
+
+		.then(function (html) {
+			
+             
+			document.getElementById("trick-container").innerHTML+=createElementFromHTML(html).innerHTML;
+            if(numberElementMin  * (click+1) > document.getElementById("trick-container").childElementCount) {
+				document.getElementById("loadMoreTricks").style.display = "none";
+			};
+	
+		}).catch(function (err) {
+			// There was an error
+			console.warn('Something went wrong.', err);
+		});
+
+		
+		}
+	     
+        btnLoadMore = document.getElementById("loadMoreTricks")
+	
+      	btnLoadMore.addEventListener('click', function (event) {
+     
+	     event.stopPropagation();
+         event.preventDefault();
+		 click++;
+         var start = numberElementMin  * click;
+	     const $url = "{{ path('load.more') }}" + start ;
+		 loadMoreTricks($url);
+		 
+		
+		})
+	</script>
 {% endblock %}

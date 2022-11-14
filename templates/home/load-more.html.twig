@@ -1,0 +1,57 @@
+{% for trick in tricks %}
+	<div class="col-lg-4 col-md-6 col-sm-12 py-4 ml-3" id="list-Snowboard">
+		<div class="card shadow">
+			<div class="card-header d-flex justify-content-between">
+				<h5 class="card-title mb-0">
+					<a href="{{ path( 'trick.details', { slug: trick.slug } ) }}" class="text-decoration-none">
+						<span class="responsive-logo-trick">
+							<i class="fas fa-snowboarding mr-1 text-info"></i>
+						</span>
+						{{ trick.name }}
+					</a>
+				</h5>
+				<div>
+					{%  if (is_granted("delete_trick" , trick)) %}
+						<a href="{{ path('delete.trick', {'slug': trick.slug}) }}" onclick="return confirm(`Êtes-vous sûr de vouloir supprimer le trick : {{trick.name}} ?`)">
+							<i class="fas fa-trash-alt"></i>
+						</a>
+					{% endif %}
+				</div>
+			</div>
+
+			<img src="{{ asset(trick.images.first.pathImg) }}" class="card-img-top" alt="{{ trick.name }}"/>
+
+			<div class="card-footer pr-3 pl-3">
+				<p class="mb-0 text-muted">
+					{% if trick.updatedAt <= trick.createdAt %}
+						{% if trick.user.avatar %}
+							<img src="{{ asset(trick.user.avatar) }}" class="rounded-circle avatar" alt="Avatar {{ trick.user.userName }}"/>
+						{% else %}
+							<img src="https://forum.pcastuces.com/img/efa5cf51c0711fafc61e73f90e05bc12.png" class="rounded-circle avatar" alt="Avatar {{ trick.user.userName }}"/>
+						{% endif %}
+						Crée par le
+						<a href="#" class="text-info text-decoration-none">
+							{{ trick.user.userName }}
+						</a>
+						<span class="responsive-date-trick">
+							{{ trick.createdAt|date('d/m/Y', 'Europe/Paris') }}
+						</span>
+					{% else %}
+						{% if trick.user.avatar %}
+							<img src="{{ asset(trick.user.avatar) }}" class="rounded-circle avatar" alt="Avatar {{ trick.user.userName }}"/>
+						{% else %}
+							<img src="https://forum.pcastuces.com/img/efa5cf51c0711fafc61e73f90e05bc12.png" class="rounded-circle avatar" alt="Avatar {{ trick.user.userName }}"/>
+						{% endif %}
+						Mis à jour par le
+						<a href="#" class="text-info text-decoration-none">
+							{{ trick.user.userName }}
+						</a>
+						<span class="responsive-date-trick">
+							{{ trick.updatedAt|date('d/m/Y', 'Europe/Paris') }}
+						</span>
+					{% endif %}
+				</p>
+			</div>
+		</div>
+	</div>
+{% endfor %}
