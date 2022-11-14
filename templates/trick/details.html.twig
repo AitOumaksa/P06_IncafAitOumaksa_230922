@@ -151,46 +151,55 @@
 					<div class="card-body p-4">
 						{% if comments is not empty %}
 							<h4 class="mb-4">Commentaires</h4>
-							{% for comment in comments %}
-								<div class="d-flex flex-start border-bottom border-2 mb-3">
-									{% if comment.user.avatar %}
-										<img class="rounded-circle shadow-1-strong me-3" src="{{ asset(comment.user.avatar)}}" alt="avatar de {{comment.user.userName}}" width="60" height="60"/>
-									{% else %}
-										<img class="rounded-circle shadow-1-strong me-3" src="https://forum.pcastuces.com/img/efa5cf51c0711fafc61e73f90e05bc12.png" alt="avatar de {{comment.user.userName}}" width="60" height="60"/>
-									{% endif %}
-									<div>
-										<h6 class="fw-bold mb-1">{{comment.user.userName}}</h6>
-										<div class="d-flex align-items-center mb-0">
-											{% if comment.updatedAt <= comment.createdAt %}
-												<p class="mb-0">
-													<small class="pe-3">
-														Ajouté le :
-														{{comment.createdAt|date('d/m/Y',"Europe/Paris")}}</small>
-												</p>
-											{% else %}
-												<p class="mb-0">
-													<small class="pe-3">
-														Mis à jour le :
-														{{comment.updatedAt|date('d/m/Y',"Europe/Paris")}}</small>
-												</p>
-											{% endif %}
-											{%  if (is_granted("edit_comment" , comment)) %}
-												<a href="{{ path('edit.comment', {'id': comment.id}) }}" class="link-muted pe-2">
-													<i class="fas fa-pencil-alt"></i>
-												</a>
-											{% endif %}
-											{%  if (is_granted("delete_comment" , comment)) %}
-												<a href="{{ path('delete.comment', {'id': comment.id}) }}" class="link-muted pe-2" onclick="return confirm(`Êtes-vous sûr de vouloir supprimer votre commentaire ?`)">
-													<i class="fas fa-trash-alt"></i>
-												</a>
-											{% endif %}
+							<div id="comment-container">
+								{% for comment in comments %}
+									<div class="d-flex flex-start border-bottom border-2 mb-3">
+										{% if comment.user.avatar %}
+											<img class="rounded-circle shadow-1-strong me-3" src="{{ asset(comment.user.avatar)}}" alt="avatar de {{comment.user.userName}}" width="60" height="60"/>
+										{% else %}
+											<img class="rounded-circle shadow-1-strong me-3" src="https://forum.pcastuces.com/img/efa5cf51c0711fafc61e73f90e05bc12.png" alt="avatar de {{comment.user.userName}}" width="60" height="60"/>
+										{% endif %}
+										<div>
+											<h6 class="fw-bold mb-1">{{comment.user.userName}}</h6>
+											<div class="d-flex align-items-center mb-0">
+												{% if comment.updatedAt <= comment.createdAt %}
+													<p class="mb-0">
+														<small class="pe-3">
+															Ajouté le :
+															{{comment.createdAt|date('d/m/Y',"Europe/Paris")}}</small>
+													</p>
+												{% else %}
+													<p class="mb-0">
+														<small class="pe-3">
+															Mis à jour le :
+															{{comment.updatedAt|date('d/m/Y',"Europe/Paris")}}</small>
+													</p>
+												{% endif %}
+												{%  if (is_granted("edit_comment" , comment)) %}
+													<a href="{{ path('edit.comment', {'id': comment.id}) }}" class="link-muted pe-2">
+														<i class="fas fa-pencil-alt"></i>
+													</a>
+												{% endif %}
+												{%  if (is_granted("delete_comment" , comment)) %}
+													<a href="{{ path('delete.comment', {'id': comment.id}) }}" class="link-muted pe-2" onclick="return confirm(`Êtes-vous sûr de vouloir supprimer votre commentaire ?`)">
+														<i class="fas fa-trash-alt"></i>
+													</a>
+												{% endif %}
+											</div>
+											<p class="mb-3">
+												{{comment.content}}
+											</p>
 										</div>
-										<p class="mb-3">
-											{{comment.content}}
-										</p>
+									</div>
+								{% endfor %}
+								<div class="row">
+									<div class="d-flex justify-content-center">
+										<a href="#" id="loadMoreComments">
+											<i class="fas fa-plus-circle fa-3x"></i>
+										</a>
 									</div>
 								</div>
-							{% endfor %}
+							</div>
 						{% else %}
 							<div class="alert alert-primary" role="alert">
 								Y'a aucun commentaire dans cette trick!
@@ -202,4 +211,55 @@
 			</div>
 		</div>
 	</div>
-</section>{% endblock %}
+</section>{% endblock %}{% block javascripts %}
+<script>
+
+	click = 0;
+numberElementMin = document.getElementById("comment-container").childElementCount;
+
+function createElementFromHTML(htmlString) {
+var div = document.createElement('div');
+div.innerHTML = htmlString.trim();
+
+// Change this to div.childNodes to support multiple top-level nodes.
+return div
+}
+
+
+function loadMoreComments(url) {
+
+response = fetch(url, {method: 'GET'}).then(function (res) {
+
+if (res.ok) {
+
+return res.text();
+}
+}).then(function (html) {
+
+
+document.getElementById("comment-container").innerHTML += createElementFromHTML(html).innerHTML;
+if (numberElementMin * (click + 1) > document.getElementById("comment-container").childElementCount) {
+document.getElementById("loadMoreComments").style.display = "none";
+};
+
+}).catch(function (err) { // There was an error
+console.warn('Something went wrong.', err);
+});
+
+
+}
+
+btnLoadMore = document.getElementById("loadMoreComments")
+
+btnLoadMore.addEventListener('click', function (event) {
+
+event.stopPropagation();
+event.preventDefault();
+click ++;
+var start = numberElementMin * click;
+const $url = "{{ path('loadMore.comments', {'slug': trick.slug}) }}/" + start;
+loadMoreComments($url);
+
+
+})
+</script>{% endblock %}

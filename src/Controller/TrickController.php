@@ -7,6 +7,7 @@ use App\Entity\Trick;
 use App\Form\CommentType;
 use App\Form\TrickType;
 use App\Repository\CommentRepository;
+use App\Repository\TrickRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,15 +21,15 @@ class TrickController extends AbstractController
 
     #[Route('/add', name: 'add.trick')]
     public function addTrick(ManagerRegistry $doctrine, Request $request): Response
-    { 
+    {
         $this->denyAccessUnlessGranted('ROLE_USER');
         $manager = $doctrine->getManager();
         $trick = new Trick();
         $form = $this->createForm(TrickType::class, $trick);
         $form->handleRequest($request);
-        
+
         if ($form->isSubmitted() && $form->isValid()) {
-            
+
             foreach ($form->get('images') as $imageForm) {
                 $imageFile = $imageForm->get('imageFile')->getData();
                 $path = 'assets/figures/img/tricks/images_directory/';
@@ -45,19 +46,18 @@ class TrickController extends AbstractController
             $this->addFlash('success', 'la Figure <' . $trick->getName() . '> est ajouter avec succée');
 
             return $this->redirectToRoute('home');
-        } 
-            
-            return $this->render('trick/add-trick.html.twig', [
-                'form' => $form->createView()
-            ]);
-        
+        }
+
+        return $this->render('trick/add-trick.html.twig', [
+            'form' => $form->createView()
+        ]);
     }
 
     #[Route('/{slug}', name: 'trick.details')]
     public function getTrick(Request $request, CommentRepository $commentRepository, ManagerRegistry $doctrine, Trick $trick): Response
     {
 
-        $comments = $commentRepository->findBy(['trick' => $trick->getId()], ['updatedAt' => 'DESC']);
+        $comments = $commentRepository->findBy(['trick' => $trick->getId()], ['updatedAt' => 'DESC'], 10, 0);
 
         $comment = new Comment();
 
@@ -93,6 +93,17 @@ class TrickController extends AbstractController
         ]);
     }
 
+    #[Route("/{slug}/{start}", name: 'loadMore.comments', requirements: ["start" => "\d+"])]
+    public function loadMoreComments(Trick $trick, CommentRepository $commentRepository, $start = 10)
+    {
+        $comments = $commentRepository->findBy(['trick' => $trick->getId()], ['updatedAt' => 'DESC'], 10, $start);
+
+        return $this->render('trick/load-more-comments.html.twig', [
+            'trick' => $trick,
+            'start' => $start,
+            'comments' => $comments
+        ]);
+    }
 
     #[Route('/edit/{slug}', name: 'edit.trick')]
     public function editTrick(Request $request, ManagerRegistry $doctrine, Trick $trick)
