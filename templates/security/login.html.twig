@@ -1,35 +1,49 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}SnowTricks - Connexion !{% endblock %}
+{% block title %}SnowTricks - Connexion !
+{% endblock %}
 
 {% block main %}
-<div class="container d-flex justify-content-center">
-<div class="row  col-md-10 col-md-offset-1 mt-5 mb-4 shadow p-3 mb-5 bg-body rounded ">
-<form method="post">
-    {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
+	<div class="container d-flex justify-content-center">
+		<div class="row  col-md-10 col-md-offset-1 mt-5 mb-4 shadow p-3 mb-5 bg-body rounded ">
+			<form method="post">
+				{% if error %}
+					<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+				{% endif %}
 
-    {% if app.user %}
-        <div class="mb-3">
-            You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
-        </div>
-    {% endif %}
-    <h1 class="h3 mb-3 font-weight-normal"> Connectez - Vous : </h1>
+				{% if app.user %}
+					<div class="mb-3">
+						You are logged in as
+						{{ app.user.userIdentifier }},
+						<a href="{{ path('app_logout') }}">Logout</a>
+					</div>
+				{% endif %}
+				{% for message in app.session.flashBag.get('danger') %}
+					<div class="alert alert-danger" role="alert">
+						{{ message }}
+					</div>
+				{% endfor %}
+				{% for message in app.session.flashBag.get('success') %}
+					<div class="alert alert-success" role="alert">
+						{{ message }}
+					</div>
+				{% endfor %}
+				<h1 class="h3 mb-3 font-weight-normal">
+					Connectez - Vous :
+				</h1>
 
-    <label for="inputUsername mb-3">Nom d'utilisateur</label>
-    <input type="text" value="{{ last_username }}" name="userName" id="inputUsername" class="form-control" autocomplete="username" placeholder = "Votre adresse E-mail" required autofocus>
-    <label for="inputPassword mb-3">Mot de passe</label>
-    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" placeholder = "Votre mot de passe" required>
-
-    <input type="hidden" name="_csrf_token"
-           value="{{ csrf_token('authenticate') }}"
-    >
-
-    <button class="btn btn-lg btn-info btn-md text-light mt-2" type="submit">
-        Connectez - vous
-    </button>
-</form>
-</div>
-</div>
+				<label for="inputUsername mb-3">Nom d'utilisateur</label>
+				<input type="text" value="{{ last_username }}" name="userName" id="inputUsername" class="form-control" autocomplete="username" placeholder="Votre adresse E-mail" required autofocus>
+				<label for="inputPassword mb-3">Mot de passe</label>
+				<input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" placeholder="Votre mot de passe" required>
+				<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+				<div class="row">
+					<a href="{{ path('forget.password')}}" class="col-5 w-100">Mot de passe oublié ?</a>
+				</div>
+				<button class="btn btn-lg btn-info btn-md text-light mt-2" type="submit">
+					Connectez - vous
+				</button>
+			</form>
+		</div>
+	</div>
 {% endblock %}
