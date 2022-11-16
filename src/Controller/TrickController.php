@@ -7,7 +7,6 @@ use App\Entity\Trick;
 use App\Form\CommentType;
 use App\Form\TrickType;
 use App\Repository\CommentRepository;
-use App\Repository\TrickRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -68,8 +67,6 @@ class TrickController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $comment->setCreatedAt(new \DateTimeImmutable());
-            $comment->setUpdatedAt(new \DateTimeImmutable());
             $comment->setTrick($trick);
             $comment->setUser($this->getUser());
 
@@ -131,7 +128,6 @@ class TrickController extends AbstractController
             $trick->setUpdatedAt(new \DateTimeImmutable());
             $trick->setSlug($trick->getName());
 
-            $manager->persist($trick);
             $manager->flush();
 
             $this->addFlash(

@@ -29,7 +29,6 @@ class CommentController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $comment->setUpdatedAt(new \DateTimeImmutable());
-            $manager->persist($comment);
             $manager->flush();
 
             $this->addFlash(
