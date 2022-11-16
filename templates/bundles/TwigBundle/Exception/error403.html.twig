@@ -3,6 +3,22 @@
 {% block title %}SnowTricks - Accès refusé{% endblock %}
 
 {% block main %}
-    <h2>Vous ne possédez pas les droits nécessaires pour accéder à cette ressource !</h2>
-    <a href="{{ path('home') }}" class="btn btn-primary">Retour à la page d'accueil</a>
+    <body>
+        <div class="d-flex align-items-center justify-content-center vh-100">
+            <div class="text-center row">
+                <div class=" col-md-6">
+                    <img src="https://wikiclic.com/wp-content/uploads/2016/07/403-forbidden-1.jpg" alt="Logo 403 erreur "
+                        class="img-fluid">
+                </div>
+                <div class=" col-md-6 mt-5">
+                    <p class="fs-3"> <span class="text-danger">Opps!</span> Page n'est pas autorisée.</p>
+                    <p class="lead">
+                        Vous ne possédez pas les droits nécessaires pour accéder à cette ressource !
+                    </p>
+                    <a href="{{ path('home') }}" class="btn btn-info text-light">Retour à la page d'Accueil</a>
+                </div>
+
+            </div>
+        </div>
+    </body>
 {% endblock %}

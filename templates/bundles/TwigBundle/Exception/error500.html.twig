@@ -3,6 +3,19 @@
 {% block title %}SnowTricks - Erreur interne du serveur{% endblock %}
 
 {% block main %}
-    <h2>Une erreur s'est produtie du côté serveur !</h2>
-    <a href="{{ path('home') }}" class="btn btn-primary">Retour à la page d'accueil</a>
+     <body>
+        <div class="d-flex align-items-center justify-content-center vh-100">
+            <div class="text-center row">
+                <div class=" col-md-6">
+                    <img src="https://trovalost.it/wp-content/uploads/2014/10/http-error-500-1200x1000.png" alt="Logo 404 erreur "
+                        class="img-fluid">
+                </div>
+                <div class=" col-md-6 mt-5">
+				<h1>Erreur serveur</h1>
+                    <p class="fs-3"> <span class="text-danger">Opps!</span>Une erreur s'est produtie du côté serveur !</p>
+                </div>
+
+            </div>
+        </div>
+    </body>
 {% endblock %}
