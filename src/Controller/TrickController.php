@@ -90,10 +90,10 @@ class TrickController extends AbstractController
         ]);
     }
 
-    #[Route("/{slug}/{start}", name: 'loadMore.comments', requirements: ["start" => "\d+"])]
+    #[Route("/moreComments/{slug}/{start}", name: 'loadMore.comments', requirements: ["start" => "\d+"])]
     public function loadMoreComments(Trick $trick, CommentRepository $commentRepository, $start = 10)
     {
-        $comments = $commentRepository->findBy(['trick' => $trick->getId()], ['updatedAt' => 'DESC'], 10, $start);
+        $comments = $commentRepository->findBy(['trick' => $trick->getSlug()], ['updatedAt' => 'DESC'], 10, $start);
 
         return $this->render('trick/load-more-comments.html.twig', [
             'trick' => $trick,
@@ -113,7 +113,6 @@ class TrickController extends AbstractController
         $manager = $doctrine->getManager();
 
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             foreach ($form->get('images') as $imageForm) {
                 $imageFile = $imageForm->get('imageFile')->getData();
