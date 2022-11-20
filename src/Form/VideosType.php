@@ -21,15 +21,7 @@ class VideosType extends AbstractType
                 'attr' => [
                 'placeholder' => "Ajouter un lien",
                 ],
-                'constraints' => [
-                   
-                    new Assert\NotBlank([
-                        'message' => 'Vous devez ajouter une video',
-                    ]),
-                    new Assert\Url(
-                        message: 'Url de video doit étre , Exemple: "https://www.youtube.com/embed/y1S59PcUKb4"',
-                    )
-                ],
+             
             ])
         ;
     }

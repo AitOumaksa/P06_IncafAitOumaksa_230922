@@ -23,6 +23,22 @@
 		<div class="row container col-md-10 col-md-offset-1 mt-5 mb-4 shadow p-3 mb-5 bg-body rounded d-flex flex-wrap">
 			<h1 class=" mb-3">Créer un nouveau figure :</h1>
 			{{ form_start(form , {'attr': {'novalidate': 'novalidate'}}) }}
+			 
+			{# For convenience sake of this snippet, store the errors in a variable #}
+            {% set formErrors = form.vars.errors %}
+                                    
+					{# If there are errors in the form, display them in this unorganized list #}
+					{% if formErrors|length %}
+						
+							{% for error in formErrors %}
+								<div class="row justify-content-center m-3 alert alert-danger" role="alert">
+								{{ error.message }}
+								</div>
+							{% endfor %}
+						
+					{% endif %}
+
+				
 			<div class="row mb-3">
 				<div class="col-sm-6">{{ form_row(form.name) }}</div>
 				<div class="col-sm-6">{{ form_row(form.category) }}</div>

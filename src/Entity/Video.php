@@ -16,6 +16,10 @@ class Video
 
    
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Veuillez renseigner ce champ")]
+    #[Assert\Url(
+        message: 'Url de video doit étre , Exemple: "https://www.youtube.com/embed/y1S59PcUKb4' ,
+    )]
     private ?string $urlVideo = null;
 
     #[ORM\ManyToOne(inversedBy: 'videos')]
@@ -32,7 +36,7 @@ class Video
     }
 
     public function setUrlVideo(string $urlVideo): self
-    {
+    {  
         $this->urlVideo = $urlVideo;
 
         return $this;

@@ -72,9 +72,9 @@
 							<hr>
 							<!-- Start gallery picture -->
 
-							<div class="container">
-
-								<div class="row" id="seeMedia">
+							<div class="container navbar navbar-expand-md">
+                               
+								<div class="row collapse navbar-collapse" id="seeMedia">
 									{% for image in trick.images %}
 										<div class="col-md-3 col-sm-4 col-xs-6 mb-3">
 
@@ -93,7 +93,7 @@
 
 								</div>
 								<div class="col text-center">
-									<button class="btn btn-info col-10 mt-3" type="button" data-bs-toggle="collapse" data-bs-target="#seeMedia" aria-expanded="false" aria-controls="seeMedia">Voir les médias</button>
+									<button class="col-10 mt-3 navbar-toggler bg-info text-light" type="button" data-bs-toggle="collapse" data-bs-target="#seeMedia" aria-expanded="false" aria-controls="seeMedia">Voir les médias</button>
 								</div>
 							</div>
 

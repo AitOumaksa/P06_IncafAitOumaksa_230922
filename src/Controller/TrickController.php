@@ -13,6 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[Route('/trick')]
 class TrickController extends AbstractController
@@ -24,11 +25,11 @@ class TrickController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_USER');
         $manager = $doctrine->getManager();
         $trick = new Trick();
+        
         $form = $this->createForm(TrickType::class, $trick);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             foreach ($form->get('images') as $imageForm) {
                 $imageFile = $imageForm->get('imageFile')->getData();
                 $path = 'assets/figures/img/tricks/images_directory/';
@@ -103,40 +104,62 @@ class TrickController extends AbstractController
     }
 
     #[Route('/edit/{slug}', name: 'edit.trick')]
-    public function editTrick(Request $request, ManagerRegistry $doctrine, Trick $trick)
+    public function editTrick(Request $request, ManagerRegistry $doctrine, Trick $trick,ValidatorInterface $validator)
     {
+        
+       
 
         $this->denyAccessUnlessGranted('edit_trick', $trick);
-
+        
         $form = $this->createForm(TrickType::class, $trick);
-
+        
         $manager = $doctrine->getManager();
-
+        
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
+        
+        
+        if ($form->isSubmitted()) {
+             
+ 
+       
             foreach ($form->get('images') as $imageForm) {
                 $imageFile = $imageForm->get('imageFile')->getData();
-                if ($imageFile) {
+               
+
+                if ($imageFile !== null) {                    
                     $path = 'assets/figures/img/tricks/images_directory/';
                     $fichier = md5(uniqid()) . '.' . $imageFile->guessExtension();
                     $imageFile->move($this->getParameter('images_directory'), $fichier);
                     $image = $imageForm->getData();
                     $image->setPathImg($path . $fichier);
                 }
+               
             }
-            $trick->setUpdatedAt(new \DateTimeImmutable());
-            $trick->setSlug($trick->getName());
+            
+            
+            $errors = $validator->validate($trick);
+          
+            if (!count($errors) > 0) {
+                $trick->setUpdatedAt(new \DateTimeImmutable());
+                $trick->setSlug($trick->getName());
+                $manager->flush();
+            
 
-            $manager->flush();
-
-            $this->addFlash(
-                'success',
-                'La figure <' . $trick->getName() . '>  a bien été modifié !'
-            );
-
-            return $this->redirectToRoute('trick.details', [
-                'slug' => $trick->getSlug()
-            ]);
+                $this->addFlash(
+                    'success',
+                    'La figure <' . $trick->getName() . '>  a bien été modifié !'
+                );
+    
+                return $this->redirectToRoute('trick.details', [
+                    'slug' => $trick->getSlug()
+                ]);
+               
+            }
+            else {
+                $errorsString = (string) $errors;
+            }
+          
+           
         }
 
         return $this->render('trick/edit-trick.html.twig', [

@@ -10,6 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
+
+
 #[ORM\Entity(repositoryClass: TrickRepository::class)]
 #[UniqueEntity(fields: "name", message: "Une figure possède déjà ce nom, merci de le modifier")]
 class Trick
@@ -47,11 +49,16 @@ class Trick
     private Collection $commments;
 
     #[Assert\Valid()]
+    #[Assert\Count(min : 1, minMessage : "Veuillez sélectionner au moins une image")]
     #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Image::class, cascade: ["persist" , "remove"])]
-    private Collection $images;
-     
+    private Collection $images ;
+    
+
+    
+    #[Assert\Valid()]
+    #[Assert\Count(min : 1, minMessage : "Veuillez sélectionner au moins une video")]
     #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Video::class,  cascade: ['persist', "remove"])]
-    private Collection $videos;
+    private Collection $videos  ;
 
     #[ORM\ManyToOne(inversedBy: 'tricks')]
     private ?User $user = null;
