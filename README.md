@@ -22,13 +22,14 @@ Bootstrap 5.2.0
 
     git clone https://github.com/AitOumaksa/P06_IncafAitOumaksa_230922.git 
 
-2-Configurez vos variables d'environnement tel que la connexion à la base de données ou votre serveur SMTP ou adresse mail dans le fichier .env. 
+2-Configurez vos variables d'environnement tel que la connexion à la base de données ou votre serveur SMTP ou adresse mail dans le fichier .env.local qui devra être crée à la racine du projet en réalisant une copie du fichier .env.
+
   
 3-Téléchargez et installez les dépendances back-end du projet avec Composer :
   
       composer install
  
-4-Téléchargez et installez les dépendances front-end du projet avec Npm :
+4-Au niveau de dossier /public/ Téléchargez et installez les dépendances front-end du projet avec Npm :
 
        npm install
        
