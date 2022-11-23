@@ -29,7 +29,7 @@ Bootstrap 5.2.0
   
       composer install
  
-4-Téléchargez et installez les dépendances front-end du projet avec Npm :
+4-Au niveau de dossier /public/ Téléchargez et installez les dépendances front-end du projet avec Npm :
 
        npm install
        
