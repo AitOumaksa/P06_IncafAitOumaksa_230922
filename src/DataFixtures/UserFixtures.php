@@ -36,7 +36,7 @@ class UserFixtures extends Fixture
         $gender = $faker->randomElement($genders);
         $date  = new \DateTimeImmutable();
         $category = ['Grabs', 'Rotations', 'Flips', 'Rotations désaxées', 'Slides', 'One foot', 'Old school'];
-        $tricksName = ['Mute', 'Indy', '360', '720', 'Backflip', 'Misty', 'Tail slide', 'Method air', 'Backside air'];
+        $tricksName = ['Method air 1',  'Tail slide 1',  'Tail slide 3'];
 
         //Admin
         $admin = new User();
@@ -75,12 +75,12 @@ class UserFixtures extends Fixture
             $trick->setUser($faker->randomElement($users));
             $manager->persist($trick);
 
-            for ($k = 1; $k < 4; $k++) {
+   
                 $image = new Image();
-                $image->setPathImg('assets/figures/img/tricks/' . $trick->getName() . ' ' . $k . '.jpg');
+                $image->setPathImg('assets/figures/img/tricks/' . $trick->getName().'.jpg');
                 $image->setTrick($trick);
                 $manager->persist($image);
-            }
+            
 
 
             // 1 to 2 Video by Trick
